@@ -2,7 +2,7 @@ import { Logger } from "./logger/logger.ts";
 import { RequestLogger } from "./logger/request.logger.ts";
 import { Route } from "./route/route.ts";
 import { Router } from "./router/router.ts";
-import { RequestHandler, HttpMethod, NextFunc } from "./router/type.ts";
+import type { HttpMethod, NextFunc, RequestHandler } from "./router/type.ts";
 
 export class Server {
   private _route: Route = new Route();

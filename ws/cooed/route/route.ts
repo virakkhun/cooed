@@ -15,8 +15,9 @@ export class Route {
     const routeKey = this._createRouteKey(route);
     const isPathRegistered = this.#routes.has(routeKey);
 
-    if (isPathRegistered)
+    if (isPathRegistered) {
       throw new Error(`${route.path} is already registered!!`);
+    }
 
     this.#routeReport.push({
       method: route.method,
@@ -43,8 +44,9 @@ export class Route {
 
     if (!resolvedRoute) return Array.of(this._handlerNotFound);
 
-    if (route.method !== resolvedRoute.method)
+    if (route.method !== resolvedRoute.method) {
       return Array.of(this._handlerNotFound);
+    }
 
     return resolvedRoute.handlers;
   }

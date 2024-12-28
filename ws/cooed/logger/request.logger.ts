@@ -11,7 +11,8 @@ export class RequestLogger implements ILogger {
 
   log(): void {
     const { pathname, method, status } = this.dto;
-    const template = `%c>>>> %cpath: ${pathname} | method: ${method} | status: ${status} | %ctimestamp: %c${this._isoTime}`;
+    const template =
+      `%c>>>> %cpath: ${pathname} | method: ${method} | status: ${status} | %ctimestamp: %c${this._isoTime}`;
     const format = [
       "color:yellow;",
       "color:green;",

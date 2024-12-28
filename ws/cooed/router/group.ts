@@ -1,5 +1,4 @@
-import { IRouter, RequestHandler } from "./type.ts";
-import { Router } from "./router.ts";
+import type { IRouter, RequestHandler, Router } from "./index.ts";
 
 export class RouterGroup implements IRouter {
   #prefix: string;
