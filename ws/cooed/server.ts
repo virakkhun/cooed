@@ -1,6 +1,7 @@
 import { Logger } from "./logger/logger.ts";
 import { RequestLogger } from "./logger/request.logger.ts";
 import { Route } from "./route/route.ts";
+import type { IRouter } from "./router/index.ts";
 import { Router } from "./router/router.ts";
 import type { HttpMethod, NextFunc, RequestHandler } from "./router/type.ts";
 
@@ -30,7 +31,7 @@ export class Server {
     this._router.delete(path, ...handlers);
   }
 
-  group(prefix: string) {
+  group(prefix: string): IRouter {
     return this._router.group(prefix);
   }
 
@@ -59,7 +60,7 @@ export class Server {
     this._route.report();
   }
 
-  public async serve(req: Request) {
+  public async serve(req: Request): Promise<Response> {
     const { pathname } = new URL(req.url);
     const method = <HttpMethod>req.method;
     const handlers = this._route.resolveHandler({

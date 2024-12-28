@@ -1,5 +1,5 @@
-import { Route } from "../route/route.ts";
-import { ILogger } from "./type.ts";
+import type { Route } from "../route/index.ts";
+import type { ILogger } from "./type.ts";
 
 export class RouteLogger implements ILogger {
   constructor(private _route: Route) {}
