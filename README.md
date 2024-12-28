@@ -1,6 +1,7 @@
 cooed 🦕
 
-cooed is a simple and minimal http routing library, to handle request `Request` from Deno.serve.
+cooed is a simple and minimal http routing library, to handle request `Request`
+from Deno.serve.
 
 features:
 

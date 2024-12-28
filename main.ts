@@ -1,5 +1,4 @@
-import { RequestHandler } from "./router/type.ts";
-import { Server } from "./server.ts";
+import { RequestHandler, Server } from "@cooed/router";
 
 const server = new Server();
 
