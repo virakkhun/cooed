@@ -14,8 +14,7 @@ features:
 here is the small server setup to handle request from Deno.serve.
 
 ```ts
-import { RequestHandler } from "./router/type.ts";
-import { Server } from "./server.ts";
+import { RequestHandler, Server } from "@cooed/router";
 
 const server = new Server();
 
@@ -37,3 +36,9 @@ server.report();
 // listen to Request through Deno.serve
 Deno.serve({ port: 8000 }, async (req) => await server.serve(req));
 ```
+
+🧾 License
+
+MIT License
+
+Copyright (c) 2024 Virak Khun
