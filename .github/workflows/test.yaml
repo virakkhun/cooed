@@ -20,13 +20,12 @@ jobs:
       - name: Setup Deno
         run: |
           curl -fsSL https://deno.land/install.sh | sh
-          alias deno='/home/runner/.deno/bin/deno'
 
       - name: Install deps
-        run: deno install
+        run: /home/runner/.deno/bin/deno install
 
       - name: Run linter
-        run: deno lint
+        run: /home/runner/.deno/bin/deno lint
 
       - name: Run tests
-        run: deno test -A
+        run: /home/runner/.deno/bin/deno test -A
