@@ -1,4 +1,4 @@
-import { HttpMethod, RequestHandler } from "../router/type.ts";
+import type { HttpMethod, RequestHandler } from "../router/index.ts";
 
 export type RouteKey = {
   path: string;

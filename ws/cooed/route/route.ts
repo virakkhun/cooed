@@ -1,7 +1,7 @@
 import { Logger } from "../logger/logger.ts";
 import { RouteLogger } from "../logger/route.logger.ts";
-import { RequestHandler } from "../router/type.ts";
-import { RouteCtx, RouteKey, RouteReport } from "./type.ts";
+import type { RequestHandler } from "../router/index.ts";
+import type { RouteCtx, RouteKey, RouteReport } from "./index.ts";
 
 export class Route {
   #routeReport: RouteReport[] = [];
@@ -31,11 +31,11 @@ export class Route {
     new Logger(new RouteLogger(this));
   }
 
-  public get getRoutes() {
+  public get getRoutes(): Map<string, RouteCtx> {
     return this.#routes;
   }
 
-  public get getRouteReport() {
+  public get getRouteReport(): RouteReport[] {
     return this.#routeReport;
   }
 
@@ -51,7 +51,7 @@ export class Route {
     return resolvedRoute.handlers;
   }
 
-  public get routes() {
+  public get routes(): Map<string, RouteCtx> {
     return this.#routes;
   }
 
