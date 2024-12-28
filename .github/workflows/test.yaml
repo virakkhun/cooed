@@ -20,6 +20,7 @@ jobs:
       - name: Setup Deno
         run: |
           curl -fsSL https://deno.land/install.sh | sh
+          alias deno='/home/runner/.deno/bin/deno'
 
       - name: Install deps
         run: deno install
