@@ -14,40 +14,40 @@ export class RouterGroup implements IRouter {
 
   get(path: string, ...handlers: RequestHandler[]): void {
     this._router.get(
-      this._buildPath(path),
+      this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
   delete(path: string, ...handlers: RequestHandler[]): void {
     this._router.delete(
-      this._buildPath(path),
+      this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
   patch(path: string, ...handlers: RequestHandler[]): void {
     this._router.patch(
-      this._buildPath(path),
+      this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
   put(path: string, ...handlers: RequestHandler[]): void {
     this._router.put(
-      this._buildPath(path),
+      this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
   post(path: string, ...handlers: RequestHandler[]): void {
     this._router.post(
-      this._buildPath(path),
+      this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
-  private _buildPath(path: string) {
+  private _joinPath(path: string) {
     return [this.#prefix, path].join("");
   }
 

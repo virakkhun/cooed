@@ -5,6 +5,6 @@ import type { RequestHandler } from "../router/type.ts";
  * @param handler
  * @description a helper function to create a request handler
  */
-export function createHandler(handler: RequestHandler) {
+export function createHandler(handler: RequestHandler): RequestHandler {
   return handler;
 }
