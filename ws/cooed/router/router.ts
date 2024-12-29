@@ -1,8 +1,12 @@
 import type { Route } from "../route/route.ts";
 import { RouterGroup } from "./group.ts";
-import { HttpMethod, type IRouter, type RequestHandler } from "./type.ts";
+import {
+  HttpMethod,
+  type IRouter as CooedRouter,
+  type RequestHandler,
+} from "./type.ts";
 
-export class Router implements IRouter {
+export class Router implements CooedRouter {
   constructor(private _route: Route) {}
 
   get(path: string, ...handlers: RequestHandler[]) {
@@ -45,7 +49,8 @@ export class Router implements IRouter {
     });
   }
 
-  group(prefix: string): IRouter {
-    return new RouterGroup(prefix, this);
+  group(prefix: string, middleware?: RequestHandler): CooedRouter {
+    const defaultMiddleware: RequestHandler = (_, next) => next;
+    return new RouterGroup(prefix, this, middleware || defaultMiddleware);
   }
 }

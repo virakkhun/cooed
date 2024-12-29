@@ -1,11 +1,15 @@
 import { Logger } from "./logger/logger.ts";
 import { RequestLogger } from "./logger/request.logger.ts";
 import { Route } from "./route/route.ts";
-import type { IRouter } from "./router/index.ts";
 import { Router } from "./router/router.ts";
-import type { HttpMethod, NextFunc, RequestHandler } from "./router/type.ts";
+import type {
+  IRouter,
+  HttpMethod,
+  NextFunc,
+  RequestHandler,
+} from "./router/type.ts";
 
-export class Server {
+export class Server implements IRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
 
@@ -31,8 +35,8 @@ export class Server {
     this._router.delete(path, ...handlers);
   }
 
-  group(prefix: string): IRouter {
-    return this._router.group(prefix);
+  group(prefix: string, middleware?: RequestHandler): IRouter {
+    return this._router.group(prefix, middleware);
   }
 
   private _nextFunc: NextFunc = () => {};
