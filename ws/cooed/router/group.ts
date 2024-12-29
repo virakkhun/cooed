@@ -1,7 +1,7 @@
 import { truthyFn } from "../util/func.util.ts";
-import type { IRouter, RequestHandler, Router } from "./index.ts";
+import type { CooedRouter, RequestHandler, Router } from "./index.ts";
 
-export class RouterGroup implements IRouter {
+export class RouterGroup implements CooedRouter {
   #prefix: string;
 
   constructor(
@@ -48,6 +48,7 @@ export class RouterGroup implements IRouter {
   }
 
   private _joinPath(path: string) {
+    if (path === "/") return this.#prefix;
     return [this.#prefix, path].join("");
   }
 

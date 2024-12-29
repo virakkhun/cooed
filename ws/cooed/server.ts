@@ -3,13 +3,14 @@ import { RequestLogger } from "./logger/request.logger.ts";
 import { Route } from "./route/route.ts";
 import { Router } from "./router/router.ts";
 import type {
-  IRouter,
+  CooedRouter,
   HttpMethod,
   NextFunc,
   RequestHandler,
 } from "./router/type.ts";
+import { nextFn } from "./util/func.util.ts";
 
-export class Server implements IRouter {
+export class Server implements CooedRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
 
@@ -35,11 +36,11 @@ export class Server implements IRouter {
     this._router.delete(path, ...handlers);
   }
 
-  group(prefix: string, middleware?: RequestHandler): IRouter {
+  group(prefix: string, middleware?: RequestHandler): CooedRouter {
     return this._router.group(prefix, middleware);
   }
 
-  private _nextFunc: NextFunc = () => {};
+  private _nextFn: NextFunc = nextFn;
 
   private _getResponse(
     handlers: RequestHandler[],
@@ -48,7 +49,7 @@ export class Server implements IRouter {
     let response: Response | Promise<Response> = new Response(null);
 
     for (const handler of handlers) {
-      const next = handler(request, this._nextFunc);
+      const next = handler(request, this._nextFn);
       const isNextInstanceOfResponse =
         next instanceof Response || next instanceof Promise;
       if (isNextInstanceOfResponse) {

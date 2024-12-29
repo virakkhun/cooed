@@ -15,7 +15,7 @@ export type RequestHandler = (
   next: NextFunc,
 ) => RequestHandlerResponse;
 
-export interface IRouter {
+export interface CooedRouter {
   get(path: string, ...handlers: RequestHandler[]): void;
   post(path: string, ...handlers: RequestHandler[]): void;
   put(path: string, ...handlers: RequestHandler[]): void;

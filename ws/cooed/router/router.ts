@@ -1,10 +1,6 @@
 import type { Route } from "../route/route.ts";
 import { RouterGroup } from "./group.ts";
-import {
-  HttpMethod,
-  type IRouter as CooedRouter,
-  type RequestHandler,
-} from "./type.ts";
+import { HttpMethod, type CooedRouter, type RequestHandler } from "./type.ts";
 
 export class Router implements CooedRouter {
   constructor(private _route: Route) {}
