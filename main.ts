@@ -2,21 +2,22 @@ import { createHandler, Server } from "@cooed/router";
 
 const server = new Server();
 
-const middleware = createHandler((_, next) => {
-  return next;
+const middleware = createHandler((ctx) => {
+  return ctx.next;
 });
 
-server.get("/", middleware, () => {
-  return Response.json("Hello world!!");
+server.get("/:id/:path", middleware, (ctx) => {
+  const params = ctx.params;
+  return Response.json(params);
 });
 
-const client = server.group("/client", (req, next) => {
-  if (req.url.includes("?"))
+const client = server.group("/client", (ctx) => {
+  if (ctx.request.url.includes("?"))
     return new Response("url can't be include query", {
       status: 400,
     });
 
-  return next;
+  return ctx.next;
 });
 
 client.get("/", () => new Response("Hello client"));

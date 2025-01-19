@@ -1,4 +1,4 @@
-import { truthyFn } from "../util/func.util.ts";
+import { truthyFn } from "../common/util/func.util.ts";
 import type { CooedRouter, RequestHandler, Router } from "./index.ts";
 
 export class RouterGroup implements CooedRouter {
@@ -12,35 +12,35 @@ export class RouterGroup implements CooedRouter {
     this.#prefix = prefix;
   }
 
-  get(path: string, ...handlers: RequestHandler[]): void {
+  get<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
     this._router.get(
       this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
-  delete(path: string, ...handlers: RequestHandler[]): void {
+  delete<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
     this._router.delete(
       this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
-  patch(path: string, ...handlers: RequestHandler[]): void {
+  patch<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
     this._router.patch(
       this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
-  put(path: string, ...handlers: RequestHandler[]): void {
+  put<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
     this._router.put(
       this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
     );
   }
 
-  post(path: string, ...handlers: RequestHandler[]): void {
+  post<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
     this._router.post(
       this._joinPath(path),
       ...this._filterHandler(this._handler, ...handlers),
@@ -52,7 +52,9 @@ export class RouterGroup implements CooedRouter {
     return [this.#prefix, path].join("");
   }
 
-  private _filterHandler(...handlers: RequestHandler[]): RequestHandler[] {
+  private _filterHandler<Path extends string = "">(
+    ...handlers: RequestHandler<Path>[]
+  ): RequestHandler<Path>[] {
     return handlers.filter(truthyFn);
   }
 }

@@ -1,18 +1,19 @@
 import { Logger } from "../logger/logger.ts";
 import { RouteLogger } from "../logger/route.logger.ts";
 import type { RequestHandler } from "../router/index.ts";
-import type { RouteCtx, RouteKey, RouteReport } from "./index.ts";
+import type { RouteCtx, IncomingRoute, RouteReport } from "./index.ts";
 
 export class Route {
-  #routeReport: RouteReport[] = [];
-  #routes = new Map<string, RouteCtx>();
+  readonly #routeReport: RouteReport[] = [];
+  readonly #routes = new Map<string, RouteCtx<string & "">>();
+  readonly #indexingKeySeperator = "_#_";
 
-  private _createRouteKey(route: RouteKey) {
-    return [route.path, route.method].join("_");
+  private _makeIndexingKey(route: IncomingRoute) {
+    return [route.path, route.method].join(this.#indexingKeySeperator);
   }
 
-  public addRoutes(route: RouteCtx) {
-    const routeKey = this._createRouteKey(route);
+  public addRoutes<Path extends string = "">(route: RouteCtx<Path>) {
+    const routeKey = this._makeIndexingKey(route);
     const isPathRegistered = this.#routes.has(routeKey);
 
     if (isPathRegistered) {
@@ -39,35 +40,75 @@ export class Route {
     return this.#routeReport;
   }
 
-  public resolveHandler(route: RouteKey): RequestHandler[] {
+  public resolveHandler(route: IncomingRoute): {
+    key: string;
+    handlers: RequestHandler[];
+  } {
     const resolvedRoute = this._getRoute(route);
 
-    if (!resolvedRoute) return Array.of(this._handlerNotFound);
+    if (!resolvedRoute) return this._resolveHandlerFallback(route);
 
-    if (route.method !== resolvedRoute.method) {
-      return Array.of(this._handlerNotFound);
-    }
+    if (route.method !== resolvedRoute.method)
+      return {
+        key: route.path,
+        handlers: Array.of(this._handlerNotFound),
+      };
 
-    return resolvedRoute.handlers;
+    return {
+      key: route.path,
+      handlers: resolvedRoute.handlers,
+    };
+  }
+
+  private _resolveHandlerFallback(route: IncomingRoute): {
+    key: string;
+    handlers: RequestHandler[];
+  } {
+    const incomingFragment = route.path.split("/");
+
+    const resolvabled = [...this.#routes].find(([key]) => {
+      const [pattern, method] = key.split(this.#indexingKeySeperator);
+      const fragment = pattern.split("/");
+
+      const isMethodMatching = route.method === method;
+
+      const isFragmentMatchingLength =
+        incomingFragment.length === fragment.length;
+      return isMethodMatching && isFragmentMatchingLength;
+    });
+
+    if (!resolvabled)
+      return {
+        key: route.path,
+        handlers: Array.of(this._handlerNotFound),
+      };
+
+    const [indexingKey, ctx] = resolvabled;
+    const [key] = indexingKey.split(this.#indexingKeySeperator);
+
+    return {
+      key,
+      handlers: ctx.handlers,
+    };
   }
 
   public get routes(): Map<string, RouteCtx> {
     return this.#routes;
   }
 
-  private _getRoute(route: RouteKey) {
-    const routeKey = this._createRouteKey(route);
+  private _getRoute(route: IncomingRoute) {
+    const routeKey = this._makeIndexingKey(route);
     return this.#routes.get(routeKey);
   }
 
   private get _handlerNotFound(): RequestHandler {
-    return (request: Request) =>
-      new Response(`${request.url} not found. 404`, {
+    return (ctx) =>
+      new Response(`${ctx.request.url} not found. 404`, {
         status: 404,
       });
   }
 
-  private _mapHandlerToItsName(route: RouteCtx) {
+  private _mapHandlerToItsName<P extends string>(route: RouteCtx<P>) {
     return route.handlers
       .map((func) => (!func.name ? "anonymous function" : func.name))
       .join(", ");

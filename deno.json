@@ -1,4 +1,5 @@
 {
+  "enable": true,
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-read --allow-write main.ts"
   },
