@@ -21,9 +21,9 @@ export type RequestBody = {
   text: string;
 };
 
-export type RequestCtx<Params extends string = ""> = {
+export type RequestCtx<Path extends string = ""> = {
   request: Request;
-  params: Record<ExtractKeys<Params>, string>;
+  params: Record<ExtractKeys<Path>, string>;
   query: URLSearchParams;
   json(): Promise<unknown>;
   text(): Promise<string>;
@@ -31,9 +31,24 @@ export type RequestCtx<Params extends string = ""> = {
 };
 
 export interface CooedRouter {
-  get<Path extends string>(path: Path, ...handlers: RequestHandler[]): void;
-  post<Path extends string>(path: Path, ...handlers: RequestHandler[]): void;
-  put<Path extends string>(path: Path, ...handlers: RequestHandler[]): void;
-  patch<Path extends string>(path: Path, ...handlers: RequestHandler[]): void;
-  delete<Path extends string>(path: Path, ...handlers: RequestHandler[]): void;
+  get<Path extends string = "">(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void;
+  post<Path extends string = "">(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void;
+  put<Path extends string = "">(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void;
+  patch<Path extends string = "">(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void;
+  delete<Path extends string = "">(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void;
 }

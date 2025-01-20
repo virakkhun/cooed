@@ -16,7 +16,7 @@ const helloPostStub: RouteCtx = {
 };
 
 const spyRequestCtx = {
-  req: <Request>{},
+  req: <Request> {},
   nextFunc: () => {},
 };
 
@@ -64,7 +64,8 @@ Deno.test({
     });
 
     await t.step({
-      name: "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
+      name:
+        "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
       async fn(t) {
         const handlers = route.resolveHandler({
           path: "/hello",
@@ -89,15 +90,16 @@ Deno.test({
             const handler = handlers[0];
             const res = handler(spyRequestCtx.req, spyRequestCtx.nextFunc);
             expect(res).toBeInstanceOf(Response);
-            expect((<Response>res).ok).toBe(true);
-            expect(await (<Response>res).text()).toStrictEqual("world");
+            expect((<Response> res).ok).toBe(true);
+            expect(await (<Response> res).text()).toStrictEqual("world");
           },
         });
       },
     });
 
     await t.step({
-      name: "Should return not found response when route to none-registered route",
+      name:
+        "Should return not found response when route to none-registered route",
       fn() {
         const handlers = route.resolveHandler({
           path: "/somethingelse",
@@ -109,7 +111,7 @@ Deno.test({
 
         const handler = handlers[0];
 
-        const res = <Response>(
+        const res = <Response> (
           handler(spyRequestCtx.req, spyRequestCtx.nextFunc)
         );
         expect(res).toBeInstanceOf(Response);

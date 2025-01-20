@@ -12,15 +12,19 @@ server.get("/:id/:path", middleware, (ctx) => {
 });
 
 const client = server.group("/client", (ctx) => {
-  if (ctx.request.url.includes("?"))
+  if (ctx.request.url.includes("?")) {
     return new Response("url can't be include query", {
       status: 400,
     });
+  }
 
   return ctx.next;
 });
 
 client.get("/", () => new Response("Hello client"));
+client.get("/:param", (ctx) => {
+  return Response.json(ctx.params);
+});
 
 server.report();
 

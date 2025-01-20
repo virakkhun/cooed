@@ -17,7 +17,7 @@ export class Server implements CooedRouter {
   constructor() {}
 
   get<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
-    this._router.get(path, ...handlers);
+    this._router.get<Path>(path, ...handlers);
   }
 
   post<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
@@ -48,8 +48,8 @@ export class Server implements CooedRouter {
 
     for (const handler of handlers) {
       const next = handler(ctx);
-      const isNextInstanceOfResponse =
-        next instanceof Response || next instanceof Promise;
+      const isNextInstanceOfResponse = next instanceof Response ||
+        next instanceof Promise;
       if (isNextInstanceOfResponse) {
         response = next;
         break;
@@ -65,7 +65,7 @@ export class Server implements CooedRouter {
 
   public async serve(req: Request): Promise<Response> {
     const { pathname } = new URL(req.url);
-    const method = <HttpMethod>req.method;
+    const method = <HttpMethod> req.method;
     const { key, handlers } = this._route.resolveHandler({
       path: pathname,
       method,
@@ -91,9 +91,7 @@ export class Server implements CooedRouter {
     const values = pathname.split("/");
     const params = key
       .split("/")
-      .map((v, idx) =>
-        v.includes(":") ? [v.replace(":", ""), values[idx]] : [],
-      )
+      .map((v, idx) => v.includes(":") ? [v.replace(":", ""), values[idx]] : [])
       .filter(([key, value]) => key && value)
       .reduce(
         (prev, [key, value]) => {
@@ -101,7 +99,7 @@ export class Server implements CooedRouter {
             [key]: value,
           });
         },
-        <Record<string, string>>{},
+        <Record<string, string>> {},
       );
 
     return {

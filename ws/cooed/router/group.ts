@@ -12,38 +12,53 @@ export class RouterGroup implements CooedRouter {
     this.#prefix = prefix;
   }
 
-  get<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
+  get<Path extends string>(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void {
     this._router.get(
       this._joinPath(path),
-      ...this._filterHandler(this._handler, ...handlers),
+      ...this._filterHandler<Path>(this._handler, ...handlers),
     );
   }
 
-  delete<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
+  delete<Path extends string>(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void {
     this._router.delete(
       this._joinPath(path),
-      ...this._filterHandler(this._handler, ...handlers),
+      ...this._filterHandler<Path>(this._handler, ...handlers),
     );
   }
 
-  patch<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
+  patch<Path extends string>(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void {
     this._router.patch(
       this._joinPath(path),
-      ...this._filterHandler(this._handler, ...handlers),
+      ...this._filterHandler<Path>(this._handler, ...handlers),
     );
   }
 
-  put<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
+  put<Path extends string>(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void {
     this._router.put(
       this._joinPath(path),
-      ...this._filterHandler(this._handler, ...handlers),
+      ...this._filterHandler<Path>(this._handler, ...handlers),
     );
   }
 
-  post<Path extends string>(path: Path, ...handlers: RequestHandler[]): void {
+  post<Path extends string>(
+    path: Path,
+    ...handlers: RequestHandler<Path>[]
+  ): void {
     this._router.post(
       this._joinPath(path),
-      ...this._filterHandler(this._handler, ...handlers),
+      ...this._filterHandler<Path>(this._handler, ...handlers),
     );
   }
 

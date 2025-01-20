@@ -1,7 +1,7 @@
 import { Logger } from "../logger/logger.ts";
 import { RouteLogger } from "../logger/route.logger.ts";
 import type { RequestHandler } from "../router/index.ts";
-import type { RouteCtx, IncomingRoute, RouteReport } from "./index.ts";
+import type { IncomingRoute, RouteCtx, RouteReport } from "./index.ts";
 
 export class Route {
   readonly #routeReport: RouteReport[] = [];
@@ -48,11 +48,12 @@ export class Route {
 
     if (!resolvedRoute) return this._resolveHandlerFallback(route);
 
-    if (route.method !== resolvedRoute.method)
+    if (route.method !== resolvedRoute.method) {
       return {
         key: route.path,
         handlers: Array.of(this._handlerNotFound),
       };
+    }
 
     return {
       key: route.path,
@@ -77,11 +78,12 @@ export class Route {
       return isMethodMatching && isFragmentMatchingLength;
     });
 
-    if (!resolvabled)
+    if (!resolvabled) {
       return {
         key: route.path,
         handlers: Array.of(this._handlerNotFound),
       };
+    }
 
     const [indexingKey, ctx] = resolvabled;
     const [key] = indexingKey.split(this.#indexingKeySeperator);
