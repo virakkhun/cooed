@@ -1,19 +1,19 @@
 import type { Route } from "../route/route.ts";
 import { RouterGroup } from "./group.ts";
-import { HttpMethod, type IRouter, type RequestHandler } from "./type.ts";
+import { type CooedRouter, HttpMethod, type RequestHandler } from "./type.ts";
 
-export class Router implements IRouter {
+export class Router implements CooedRouter {
   constructor(private _route: Route) {}
 
-  get(path: string, ...handlers: RequestHandler[]) {
-    this._route.addRoutes({
+  get<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
+    this._route.addRoutes<Path>({
       method: HttpMethod.Get,
       path,
       handlers,
     });
   }
 
-  post(path: string, ...handlers: RequestHandler[]) {
+  post<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._route.addRoutes({
       method: HttpMethod.Post,
       path,
@@ -21,7 +21,7 @@ export class Router implements IRouter {
     });
   }
 
-  patch(path: string, ...handlers: RequestHandler[]) {
+  patch<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._route.addRoutes({
       method: HttpMethod.Patch,
       path,
@@ -29,7 +29,7 @@ export class Router implements IRouter {
     });
   }
 
-  put(path: string, ...handlers: RequestHandler[]) {
+  put<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._route.addRoutes({
       method: HttpMethod.Update,
       path,
@@ -37,7 +37,7 @@ export class Router implements IRouter {
     });
   }
 
-  delete(path: string, ...handlers: RequestHandler[]) {
+  delete<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._route.addRoutes({
       method: HttpMethod.Delete,
       path,
@@ -45,7 +45,8 @@ export class Router implements IRouter {
     });
   }
 
-  group(prefix: string): IRouter {
-    return new RouterGroup(prefix, this);
+  group(prefix: string, middleware?: RequestHandler): CooedRouter {
+    const defaultMiddleware: RequestHandler = (ctx) => ctx.next;
+    return new RouterGroup(prefix, this, middleware || defaultMiddleware);
   }
 }

@@ -1,18 +1,30 @@
-import { RequestHandler, Server } from "@cooed/router";
+import { createHandler, Server } from "@cooed/router";
 
 const server = new Server();
 
-const middleware: RequestHandler = (_req, next) => {
-  return next;
-};
-
-server.get("/", middleware, () => {
-  return Response.json("Hello world!!");
+const middleware = createHandler((ctx) => {
+  return ctx.next;
 });
 
-const client = server.group("/client");
+server.get("/:id/:path", middleware, (ctx) => {
+  const params = ctx.params;
+  return Response.json(params);
+});
+
+const client = server.group("/client", (ctx) => {
+  if (ctx.request.url.includes("?")) {
+    return new Response("url can't be include query", {
+      status: 400,
+    });
+  }
+
+  return ctx.next;
+});
 
 client.get("/", () => new Response("Hello client"));
+client.get("/:param", (ctx) => {
+  return Response.json(ctx.params);
+});
 
 server.report();
 

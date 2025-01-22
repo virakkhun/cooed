@@ -2,22 +2,27 @@ import { HttpMethod } from "../router/type.ts";
 import { Route } from "./route.ts";
 import { expect } from "jsr:@std/expect";
 import type { RouteCtx } from "./type.ts";
+import type { RequestCtx } from "../mod.ts";
 
 const helloGetStub: RouteCtx = {
   method: HttpMethod.Get,
   path: "/hello",
-  handlers: [(_request) => new Response("world")],
+  handlers: [() => new Response("world")],
 };
 
 const helloPostStub: RouteCtx = {
   method: HttpMethod.Post,
   path: "/hello",
-  handlers: [(_request) => new Response("post hello")],
+  handlers: [() => new Response("post hello")],
 };
 
-const spyRequestCtx = {
-  req: <Request>{},
-  nextFunc: () => {},
+const spyRequestCtx: RequestCtx = {
+  request: <Request>{},
+  next: () => {},
+  params: {},
+  query: new URLSearchParams(),
+  json: () => Promise.resolve(),
+  text: () => Promise.resolve(""),
 };
 
 Deno.test({
@@ -64,9 +69,29 @@ Deno.test({
     });
 
     await t.step({
+      name: "Should return not found response when route to none-registered route",
+      fn() {
+        const { handlers } = route.resolveHandler({
+          path: "/somethingelse",
+          method: HttpMethod.Get,
+        });
+
+        expect(handlers.length).toBe(1);
+        expect(handlers).toBeInstanceOf(Array);
+
+        const handler = handlers[0];
+
+        const res = <Response>handler(spyRequestCtx);
+        expect(res).toBeInstanceOf(Response);
+        expect(res.ok).toStrictEqual(false);
+        expect(res.status).toStrictEqual(404);
+      },
+    });
+
+    await t.step({
       name: "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
       async fn(t) {
-        const handlers = route.resolveHandler({
+        const { handlers } = route.resolveHandler({
           path: "/hello",
           method: HttpMethod.Get,
         });
@@ -75,7 +100,7 @@ Deno.test({
         expect(handlers).toBeInstanceOf(Array);
 
         await t.step({
-          name: "Should get a handler with type of Function & undefined",
+          name: "Should get a handler with type of Function & not undefined",
           fn() {
             const handler = handlers[0];
             expect(handler).toBeInstanceOf(Function);
@@ -87,34 +112,12 @@ Deno.test({
           name: "Should get a response when back handle a request",
           async fn() {
             const handler = handlers[0];
-            const res = handler(spyRequestCtx.req, spyRequestCtx.nextFunc);
+            const res = handler(spyRequestCtx);
             expect(res).toBeInstanceOf(Response);
             expect((<Response>res).ok).toBe(true);
             expect(await (<Response>res).text()).toStrictEqual("world");
           },
         });
-      },
-    });
-
-    await t.step({
-      name: "Should return not found response when route to none-registered route",
-      fn() {
-        const handlers = route.resolveHandler({
-          path: "/somethingelse",
-          method: HttpMethod.Get,
-        });
-
-        expect(handlers.length).toBe(1);
-        expect(handlers).toBeInstanceOf(Array);
-
-        const handler = handlers[0];
-
-        const res = <Response>(
-          handler(spyRequestCtx.req, spyRequestCtx.nextFunc)
-        );
-        expect(res).toBeInstanceOf(Response);
-        expect(res.ok).toStrictEqual(false);
-        expect(res.status).toStrictEqual(404);
       },
     });
   },

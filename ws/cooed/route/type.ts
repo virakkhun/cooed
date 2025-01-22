@@ -1,14 +1,21 @@
+import type { Merge } from "../common/types/merge.ts";
 import type { HttpMethod, RequestHandler } from "../router/index.ts";
 
-export type RouteKey = {
+export type IncomingRoute = {
   path: string;
   method: HttpMethod;
 };
 
-export type RouteCtx = {
-  handlers: RequestHandler[];
-} & RouteKey;
+export type RouteCtx<Path extends string = ""> = Merge<
+  {
+    handlers: RequestHandler<Path>[];
+  },
+  IncomingRoute
+>;
 
-export type RouteReport = {
-  handlers: string;
-} & RouteKey;
+export type RouteReport = Merge<
+  {
+    handlers: string;
+  },
+  IncomingRoute
+>;
