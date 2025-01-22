@@ -8,7 +8,7 @@ export type IncomingRoute = {
 
 export type RouteCtx<Path extends string = ""> = Merge<
   {
-    handlers: RequestHandler<Path, undefined>[];
+    handlers: RequestHandler<Path>[];
   },
   IncomingRoute
 >;

@@ -2,10 +2,11 @@ import { Logger } from "../logger/logger.ts";
 import { RouteLogger } from "../logger/route.logger.ts";
 import type { RequestHandler } from "../router/index.ts";
 import type { IncomingRoute, RouteCtx, RouteReport } from "./index.ts";
+import { dynamicPatternLookup } from "./util.ts";
 
 export class Route {
   readonly #routeReport: RouteReport[] = [];
-  readonly #routes = new Map<string, RouteCtx<string & "">>();
+  readonly #routes = new Map<string, RouteCtx<string>>();
   readonly #indexingKeySeperator = "_#_";
 
   private _makeIndexingKey(route: IncomingRoute) {
@@ -65,32 +66,30 @@ export class Route {
     key: string;
     handlers: RequestHandler[];
   } {
-    const incomingFragment = route.path.split("/");
+    const resolvedPattern = dynamicPatternLookup(route.path, [
+      ...this.routes.keys(),
+    ]);
 
-    const resolvabled = [...this.#routes].find(([key]) => {
-      const [pattern, method] = key.split(this.#indexingKeySeperator);
-      const fragment = pattern.split("/");
-
-      const isMethodMatching = route.method === method;
-
-      const isFragmentMatchingLength =
-        incomingFragment.length === fragment.length;
-      return isMethodMatching && isFragmentMatchingLength;
-    });
-
-    if (!resolvabled) {
+    if (!resolvedPattern)
       return {
         key: route.path,
         handlers: Array.of(this._handlerNotFound),
       };
-    }
 
-    const [indexingKey, ctx] = resolvabled;
-    const [key] = indexingKey.split(this.#indexingKeySeperator);
+    const handlers = this._getRoute({
+      path: resolvedPattern,
+      method: route.method,
+    });
+
+    if (!handlers)
+      return {
+        key: route.path,
+        handlers: Array.of(this._handlerNotFound),
+      };
 
     return {
-      key,
-      handlers: ctx.handlers,
+      key: route.path,
+      handlers: handlers.handlers,
     };
   }
 
