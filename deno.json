@@ -1,7 +1,8 @@
 {
   "enable": true,
   "tasks": {
-    "dev": "deno run --watch --allow-net --allow-read --allow-write main.ts"
+    "dev": "deno run --watch --allow-net --allow-read --allow-write main.ts",
+    "dev:static": "deno run --watch --allow-net --allow-read --allow-write playgrounds/static/server.ts"
   },
   "imports": {
     "@std/expect": "jsr:@std/expect@^1.0.10"
