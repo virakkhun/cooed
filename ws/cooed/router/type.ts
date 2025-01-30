@@ -1,4 +1,4 @@
-import type { ExtractKeys } from "../common/types/make-key.ts";
+import type { ExtractKeys } from "../common/types/extract-key.ts";
 
 export enum HttpMethod {
   Get = "GET",

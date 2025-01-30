@@ -1,3 +1,8 @@
+/**
+ * @description default mime types, extracting from IANA
+ *
+ * @see IANA database {@link https://www.iana.org/assignments/media-types/media-types.xhtml}
+ */
 export const MIME_TYPE: Readonly<Record<string, string>> = Object.freeze({
   js: "text/javascript",
   html: "text/html",

@@ -1,14 +1,27 @@
 import { MIME_TYPE } from "./constants.ts";
+import type { StaticConfig } from "./type.ts";
 
-type Dir<T extends string> = T extends `/${string}`
-  ? "Please remove prefix forward slash"
-  : T;
-
+/**
+ * @class Static<T extends string>
+ * @description to serve a static content by providing to server constructor
+ *
+ * @example
+ * ```ts
+ * const app = new CooedServer({
+ *  static: new Static<string>({
+ *    dir: 'static'
+ *  })
+ * })
+ * ```
+ * see example at {@link https://github.com/virakkhun/cooed/blob/develop/playgrounds/static/server.ts}
+ *
+ * @publicApi
+ */
 export class Static<T extends string = ""> {
   #staticEntry = new Map<string, string>();
   #cwd = Deno.cwd();
 
-  constructor(private _dir: Dir<T>) {
+  constructor(private _config: StaticConfig<T>) {
     this._registerStaticPath(this._fullDir);
   }
 
@@ -53,7 +66,7 @@ export class Static<T extends string = ""> {
   }
 
   private get _fullDir() {
-    return [this.#cwd, this._dir].join("/");
+    return [this.#cwd, this._config.dir].join("/");
   }
 
   private _makeKey(filePath: string) {

@@ -1,7 +1,9 @@
-import { Server, Static } from "@cooed/router";
+import { CooedServer, Static } from "@cooed/router";
 
-const server = new Server({
-  static: new Static("playgrounds/static/dist"),
+const server = new CooedServer({
+  static: new Static({
+    dir: "playgrounds/static/dist",
+  }),
 });
 
 server.get("/", async () => {
