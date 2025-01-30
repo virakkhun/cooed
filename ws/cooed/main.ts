@@ -12,7 +12,7 @@ import { nextFn } from "./common/util/func.util.ts";
 import type { ServerConfig } from "./type.ts";
 import type { Static } from "./app/static.ts";
 
-export class Server implements CooedRouter {
+export class CooedServer implements CooedRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
   private _static: Static<string> | undefined = undefined;

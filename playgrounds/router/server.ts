@@ -1,6 +1,6 @@
-import { createHandler, Server } from "@cooed/router";
+import { createHandler, CooedServer } from "@cooed/router";
 
-const server = new Server();
+const server = new CooedServer();
 
 const middleware = createHandler((ctx) => {
   return ctx.next;
