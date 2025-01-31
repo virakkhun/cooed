@@ -1,4 +1,4 @@
-import { MIME_TYPE } from "./constants.ts";
+import { MIME_TYPE } from "../constants.ts";
 import type { StaticConfig } from "./type.ts";
 
 /**
