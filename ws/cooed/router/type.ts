@@ -1,4 +1,5 @@
 import type { ExtractKeys } from "../common/types/extract-key.ts";
+import type { CooedResponse } from "../response/response.ts";
 
 export enum HttpMethod {
   Get = "GET",
@@ -28,6 +29,7 @@ export type RequestCtx<Path extends string = ""> = {
   json(): Promise<unknown>;
   text(): Promise<string>;
   next: NextFunc;
+  response: CooedResponse;
 };
 
 export interface CooedRouter {

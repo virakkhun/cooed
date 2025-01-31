@@ -3,7 +3,7 @@
  *
  * @see IANA database {@link https://www.iana.org/assignments/media-types/media-types.xhtml}
  */
-export const MIME_TYPE: Readonly<Record<string, string>> = Object.freeze({
+export const MIME_TYPE = Object.freeze({
   js: "text/javascript",
   html: "text/html",
   htm: "text/html",
@@ -48,3 +48,30 @@ export const MIME_TYPE: Readonly<Record<string, string>> = Object.freeze({
   mpeg: "video/mpeg",
   mov: "video/quicktime",
 });
+
+export enum HttpStatus {
+  Ok = 200,
+  Created = 201,
+  Accepted = 202,
+  NonAuthoritativeInformation = 201,
+  NoContent = 204,
+  MovePermenantly = 301,
+  PermenatRedirect = 308,
+  Found = 302,
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  MethodNotAllowed = 405,
+  RequestTimeout = 408,
+  Conflict = 409,
+  UnsupportedMediaType = 415,
+  UnprocessableContent = 422,
+  UpgradeRequired = 426,
+  TooManyRequest = 429,
+  InternalServerError = 500,
+  NotImplemented = 501,
+  BadGateway = 502,
+  ServiceUnavailable = 503,
+  GatewayTimeout = 504,
+}

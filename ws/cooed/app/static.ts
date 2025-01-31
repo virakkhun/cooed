@@ -85,7 +85,9 @@ export class Static<T extends string = ""> {
   private _determineMimeType(fullPath: string) {
     const lastFragment = fullPath.split("/").at(-1);
     const ext = lastFragment ? lastFragment.split(".").at(-1) : MIME_TYPE.plain;
-    const mime = ext ? MIME_TYPE[ext] : MIME_TYPE.plain;
+    const mime = ext
+      ? MIME_TYPE[ext as keyof typeof MIME_TYPE]
+      : MIME_TYPE.plain;
     return mime ?? MIME_TYPE.plain;
   }
 }
