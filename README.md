@@ -8,13 +8,14 @@ features:
 - routing 🌀
 - group 🌀
 - middleware 🥷
+- static 🗒️
 
 > example:
 
 here is the small server setup to handle request from Deno.serve.
 
 ```ts
-import { RequestHandler, Server } from "@cooed/router";
+import { RequestHandler, CooedServer } from "@cooed/router";
 
 const server = new Server();
 
