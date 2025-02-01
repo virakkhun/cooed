@@ -17,6 +17,7 @@ export class CooedResponse {
 
   text(value: string): CooedResponse {
     this._body = value;
+    this._headers.set("Content-Type", MIME_TYPE.plain);
     return this;
   }
 
@@ -45,7 +46,7 @@ export class CooedResponse {
 
   forbidden(): Response {
     return new Response(this._body || "403 forbidden", {
-      status: HttpStatus.Unauthorized,
+      status: HttpStatus.Forbidden,
     });
   }
 
@@ -62,7 +63,7 @@ export class CooedResponse {
   }
 
   unsupportedMediaType(): Response {
-    return new Response(this._body || "415 method not allowed", {
+    return new Response(this._body || "415 unsupported media types", {
       status: HttpStatus.UnsupportedMediaType,
     });
   }
