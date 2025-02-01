@@ -25,7 +25,7 @@ export class Static<T extends string = ""> {
     this._registerStaticPath(this._fullDir);
   }
 
-  async resolve(path: string) {
+  async resolve(path: string): Promise<Response | undefined> {
     const fullPath = this.#staticEntry.get(path);
     if (!fullPath) return undefined;
 

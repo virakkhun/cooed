@@ -15,7 +15,7 @@ features:
 here is the small server setup to handle request from Deno.serve.
 
 ```ts
-import { RequestHandler, CooedServer } from "@cooed/router";
+import { CooedServer, RequestHandler } from "@cooed/router";
 
 const server = new Server();
 

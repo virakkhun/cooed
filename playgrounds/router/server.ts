@@ -1,4 +1,4 @@
-import { createHandler, CooedServer } from "@cooed/router";
+import { CooedServer, createHandler } from "@cooed/router";
 
 const server = new CooedServer();
 

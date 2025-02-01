@@ -15,67 +15,68 @@ export class CooedResponse {
     });
   }
 
-  text(value: string) {
+  text(value: string): CooedResponse {
     this._body = value;
     return this;
   }
 
-  json<T extends unknown>(value: T) {
+  json<T extends unknown>(value: T): CooedResponse {
     this._body = JSON.stringify(value);
     this._headers.set("Content-Type", MIME_TYPE.json);
     return this;
   }
 
-  status(httpStatus: HttpStatus) {
+  status(httpStatus: HttpStatus): CooedResponse {
     this._status = httpStatus;
     return this;
   }
 
-  badRequest() {
+  badRequest(): Response {
     return new Response(this._body || "400 bad request", {
       status: HttpStatus.BadRequest,
     });
   }
 
-  unauthorized() {
+  unauthorized(): Response {
     return new Response(this._body || "401 unauthorized", {
       status: HttpStatus.Unauthorized,
     });
   }
 
-  forbidden() {
+  forbidden(): Response {
     return new Response(this._body || "403 forbidden", {
       status: HttpStatus.Unauthorized,
     });
   }
 
-  notFound() {
+  notFound(): Response {
     return new Response(this._body || "404 not found", {
       status: HttpStatus.NotFound,
     });
   }
 
-  methodNotAllowed() {
+  methodNotAllowed(): Response {
     return new Response(this._body || "405 method not allowed", {
       status: HttpStatus.MethodNotAllowed,
     });
   }
 
-  unsupportedMediaType() {
+  unsupportedMediaType(): Response {
     return new Response(this._body || "415 method not allowed", {
       status: HttpStatus.UnsupportedMediaType,
     });
   }
 
-  unprocessableContent() {
+  unprocessableContent(): Response {
     return new Response(this._body || "422 unprocessable content", {
       status: HttpStatus.UnprocessableContent,
     });
   }
 
-  headers(values: Record<string, string>) {
-    for (const [key, value] of Object.entries(values))
+  headers(values: Record<string, string>): CooedResponse {
+    for (const [key, value] of Object.entries(values)) {
       this._headers.set(key, value);
+    }
     return this;
   }
 }

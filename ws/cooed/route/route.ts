@@ -70,22 +70,24 @@ export class Route {
       ...this.routes.keys(),
     ]);
 
-    if (!resolvedPattern)
+    if (!resolvedPattern) {
       return {
         key: route.path,
         handlers: Array.of(this._handlerNotFound),
       };
+    }
 
     const handlers = this._getRoute({
       path: resolvedPattern,
       method: route.method,
     });
 
-    if (!handlers)
+    if (!handlers) {
       return {
         key: route.path,
         handlers: Array.of(this._handlerNotFound),
       };
+    }
 
     return {
       key: route.path,
