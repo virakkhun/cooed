@@ -3,6 +3,7 @@ import { Route } from "./route.ts";
 import { expect } from "jsr:@std/expect";
 import type { RouteCtx } from "./type.ts";
 import type { RequestCtx } from "../mod.ts";
+import { CooedResponse } from "../response/index.ts";
 
 const helloGetStub: RouteCtx = {
   method: HttpMethod.Get,
@@ -17,12 +18,13 @@ const helloPostStub: RouteCtx = {
 };
 
 const spyRequestCtx: RequestCtx = {
-  request: <Request>{},
+  request: <Request> {},
   next: () => {},
   params: {},
   query: new URLSearchParams(),
   json: () => Promise.resolve(),
   text: () => Promise.resolve(""),
+  response: new CooedResponse(),
 };
 
 Deno.test({
@@ -69,7 +71,8 @@ Deno.test({
     });
 
     await t.step({
-      name: "Should return not found response when route to none-registered route",
+      name:
+        "Should return not found response when route to none-registered route",
       fn() {
         const { handlers } = route.resolveHandler({
           path: "/somethingelse",
@@ -81,7 +84,7 @@ Deno.test({
 
         const handler = handlers[0];
 
-        const res = <Response>handler(spyRequestCtx);
+        const res = <Response> handler(spyRequestCtx);
         expect(res).toBeInstanceOf(Response);
         expect(res.ok).toStrictEqual(false);
         expect(res.status).toStrictEqual(404);
@@ -89,7 +92,8 @@ Deno.test({
     });
 
     await t.step({
-      name: "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
+      name:
+        "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
       async fn(t) {
         const { handlers } = route.resolveHandler({
           path: "/hello",
@@ -114,8 +118,8 @@ Deno.test({
             const handler = handlers[0];
             const res = handler(spyRequestCtx);
             expect(res).toBeInstanceOf(Response);
-            expect((<Response>res).ok).toBe(true);
-            expect(await (<Response>res).text()).toStrictEqual("world");
+            expect((<Response> res).ok).toBe(true);
+            expect(await (<Response> res).text()).toStrictEqual("world");
           },
         });
       },

@@ -1,4 +1,4 @@
-cooed 🦕
+# cooed 🦕
 
 cooed is a simple and minimal http routing library, to handle request `Request`
 from Deno.serve.
@@ -8,13 +8,14 @@ features:
 - routing 🌀
 - group 🌀
 - middleware 🥷
+- static 🗒️
 
 > example:
 
 here is the small server setup to handle request from Deno.serve.
 
 ```ts
-import { RequestHandler, Server } from "@cooed/router";
+import { CooedServer, RequestHandler } from "@cooed/router";
 
 const server = new Server();
 
