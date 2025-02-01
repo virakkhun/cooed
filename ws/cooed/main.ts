@@ -11,6 +11,7 @@ import type {
 import { nextFn } from "./common/util/func.util.ts";
 import type { ServerConfig } from "./type.ts";
 import type { Static } from "./app/static.ts";
+import { CooedResponse } from "./response/index.ts";
 
 export class CooedServer implements CooedRouter {
   private _route: Route = new Route();
@@ -126,6 +127,7 @@ export class CooedServer implements CooedRouter {
       query: new URLSearchParams(req.url),
       json: req.json,
       text: req.text,
+      response: new CooedResponse(),
     };
   }
 }

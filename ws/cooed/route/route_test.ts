@@ -3,6 +3,7 @@ import { Route } from "./route.ts";
 import { expect } from "jsr:@std/expect";
 import type { RouteCtx } from "./type.ts";
 import type { RequestCtx } from "../mod.ts";
+import { CooedResponse } from "../response/index.ts";
 
 const helloGetStub: RouteCtx = {
   method: HttpMethod.Get,
@@ -23,6 +24,7 @@ const spyRequestCtx: RequestCtx = {
   query: new URLSearchParams(),
   json: () => Promise.resolve(),
   text: () => Promise.resolve(""),
+  response: new CooedResponse(),
 };
 
 Deno.test({
