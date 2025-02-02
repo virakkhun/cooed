@@ -15,9 +15,14 @@ features:
 here is the small server setup to handle request from Deno.serve.
 
 ```ts
-import { CooedServer, RequestHandler } from "@cooed/router";
+import { CooedServer, RequestHandler, Static } from "@cooed/router";
 
-const server = new Server();
+const server = new CooedServer({
+  static: new Static({
+    // dist is the location where the static content located
+    dir: "dist",
+  }),
+});
 
 const middleware: RequestHandler = (_req, next) => {
   return next;

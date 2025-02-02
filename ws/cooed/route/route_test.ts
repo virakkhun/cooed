@@ -1,9 +1,10 @@
 import { HttpMethod } from "../router/type.ts";
 import { Route } from "./route.ts";
 import { expect } from "jsr:@std/expect";
+import { CooedResponse } from "../response/index.ts";
 import type { RouteCtx } from "./type.ts";
 import type { RequestCtx } from "../mod.ts";
-import { CooedResponse } from "../response/index.ts";
+import type { CooedRequest } from "../request/index.ts";
 
 const helloGetStub: RouteCtx = {
   method: HttpMethod.Get,
@@ -18,12 +19,8 @@ const helloPostStub: RouteCtx = {
 };
 
 const spyRequestCtx: RequestCtx = {
-  request: <Request> {},
+  request: <CooedRequest> {},
   next: () => {},
-  params: {},
-  query: new URLSearchParams(),
-  json: () => Promise.resolve(),
-  text: () => Promise.resolve(""),
   response: new CooedResponse(),
 };
 
