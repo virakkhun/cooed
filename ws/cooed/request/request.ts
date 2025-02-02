@@ -1,5 +1,6 @@
 import { buildParams } from "../app/util.ts";
 import type { ExtractKeys } from "../common/types/extract-key.ts";
+import type { HttpMethod } from "../router/index.ts";
 
 export class CooedRequest<Path extends string = ""> {
   constructor(
@@ -9,6 +10,14 @@ export class CooedRequest<Path extends string = ""> {
 
   get raw(): Request {
     return this._req;
+  }
+
+  get headers(): Headers {
+    return this._req.headers;
+  }
+
+  get method(): HttpMethod {
+    return <HttpMethod> this._req.method;
   }
 
   get host(): string {

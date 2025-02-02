@@ -18,7 +18,7 @@ export function buildParams(
           [key]: value,
         });
       },
-      <Record<string, string>>{},
+      <Record<string, string>> {},
     );
 
   return params;
