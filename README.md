@@ -17,7 +17,7 @@ here is the small server setup to handle request from Deno.serve.
 ```ts
 import { CooedServer, RequestHandler } from "@cooed/router";
 
-const server = new Server();
+const server = new CooedServer();
 
 const middleware: RequestHandler = (_req, next) => {
   return next;
