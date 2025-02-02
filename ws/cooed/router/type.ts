@@ -1,4 +1,4 @@
-import type { ExtractKeys } from "../common/types/extract-key.ts";
+import type { CooedRequest } from "../request/index.ts";
 import type { CooedResponse } from "../response/response.ts";
 
 export enum HttpMethod {
@@ -23,11 +23,7 @@ export type RequestBody = {
 };
 
 export type RequestCtx<Path extends string = ""> = {
-  request: Request;
-  params: Record<ExtractKeys<Path>, string>;
-  query: URLSearchParams;
-  json(): Promise<unknown>;
-  text(): Promise<string>;
+  request: CooedRequest<Path>;
   next: NextFunc;
   response: CooedResponse;
 };

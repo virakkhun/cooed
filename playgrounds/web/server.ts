@@ -7,12 +7,12 @@ const middleware = createHandler((ctx) => {
 });
 
 server.get("/:id/:path", middleware, (ctx) => {
-  const params = ctx.params;
+  const params = ctx.request.params;
   return Response.json(params);
 });
 
 const client = server.group("/client", (ctx) => {
-  if (ctx.request.url.includes("?")) {
+  if (ctx.request.href.includes("?")) {
     return new Response("url can't be include query", {
       status: 400,
     });
@@ -23,7 +23,7 @@ const client = server.group("/client", (ctx) => {
 
 client.get("/", () => new Response("Hello client"));
 client.get("/:param", (ctx) => {
-  return Response.json(ctx.params);
+  return Response.json(ctx.request.params);
 });
 
 server.report();

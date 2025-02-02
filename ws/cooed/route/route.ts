@@ -77,10 +77,7 @@ export class Route {
       };
     }
 
-    const handlers = this._getRoute({
-      path: resolvedPattern,
-      method: route.method,
-    });
+    const handlers = this.#routes.get(resolvedPattern);
 
     if (!handlers) {
       return {
@@ -90,7 +87,7 @@ export class Route {
     }
 
     return {
-      key: route.path,
+      key: resolvedPattern.replace(/\_#_\w+/g, ""),
       handlers: handlers.handlers,
     };
   }
@@ -106,7 +103,7 @@ export class Route {
 
   private get _handlerNotFound(): RequestHandler {
     return (ctx) =>
-      new Response(`${ctx.request.url} not found. 404`, {
+      new Response(`${ctx.request.path} not found. 404`, {
         status: 404,
       });
   }

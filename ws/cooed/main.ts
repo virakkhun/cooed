@@ -8,10 +8,9 @@ import type {
   RequestCtx,
   RequestHandler,
 } from "./router/type.ts";
-import { nextFn } from "./common/util/func.util.ts";
 import type { ServerConfig } from "./type.ts";
 import type { Static } from "./app/static.ts";
-import { CooedResponse } from "./response/index.ts";
+import { buildRequestCtx } from "./app/util.ts";
 
 export class CooedServer implements CooedRouter {
   private _route: Route = new Route();
@@ -77,29 +76,24 @@ export class CooedServer implements CooedRouter {
     this._route.report();
   }
 
-  private async _serverStatic(pathname: string) {
+  public async serve(req: Request): Promise<Response> {
+    const { pathname } = new URL(req.url);
+
     if (this._static) {
       const res = await this._static.resolve(pathname);
       if (res) return res;
     }
-  }
-
-  public async serve(req: Request): Promise<Response> {
-    const { pathname } = new URL(req.url);
-
-    await this._serverStatic(pathname);
 
     const method = <HttpMethod>req.method;
     const { key, handlers } = this._route.resolveHandler({
       path: pathname,
       method,
     });
-    const ctx: RequestCtx = this._makeRequestCtx(req, key);
+    const ctx: RequestCtx = buildRequestCtx(req, key);
     const response = this._getResponse(handlers, ctx);
 
     if (response instanceof Promise) {
       const res = await response;
-
       new Logger(new RequestLogger({ pathname, method, status: res.status }));
       return res;
     }
@@ -108,34 +102,5 @@ export class CooedServer implements CooedRouter {
       new RequestLogger({ pathname, method, status: response.status }),
     );
     return response;
-  }
-
-  private _makeRequestCtx(req: Request, key: string): RequestCtx {
-    const { pathname } = new URL(req.url);
-    const values = pathname.split("/");
-    const params = key
-      .split("/")
-      .map((v, idx) =>
-        v.includes(":") ? [v.replace(":", ""), values[idx]] : [],
-      )
-      .filter(([key, value]) => key && value)
-      .reduce(
-        (prev, [key, value]) => {
-          return Object.assign(prev, {
-            [key]: value,
-          });
-        },
-        <Record<string, string>>{},
-      );
-
-    return {
-      request: req,
-      params,
-      next: nextFn,
-      query: new URLSearchParams(req.url),
-      json: req.json,
-      text: req.text,
-      response: new CooedResponse(),
-    };
   }
 }
