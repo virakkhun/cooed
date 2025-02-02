@@ -1,7 +1,7 @@
 {
   "enable": true,
   "tasks": {
-    "dev": "deno run --watch --allow-net --allow-read --allow-write main.ts",
+    "dev:api": "deno run --watch --allow-net --allow-read --allow-write playgrounds/web/server.ts",
     "dev:static": "deno run --watch --allow-net --allow-read --allow-write playgrounds/static/server.ts"
   },
   "imports": {
