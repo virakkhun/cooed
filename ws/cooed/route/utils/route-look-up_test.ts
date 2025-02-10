@@ -1,6 +1,6 @@
 import { expect } from "@std/expect";
-import { dynamicPatternLookup, groupStaticPattern } from "./util.ts";
-import { groupDynamicPattern } from "./util.ts";
+import { dynamicPatternLookup, groupStaticPattern } from "./route-look-up.ts";
+import { groupDynamicPattern } from "./route-look-up.ts";
 
 const userDetailLookUpStub = "/users/046d6e87-4e14-4757-8db0-2c34cf44d10a";
 const userProfileLookUpStub =
@@ -33,8 +33,7 @@ Deno.test({
     });
 
     await t.step({
-      name:
-        `Should return /users/:id/profile when lookup for ${userProfileLookUpStub}`,
+      name: `Should return /users/:id/profile when lookup for ${userProfileLookUpStub}`,
       fn() {
         const value = dynamicPatternLookup(
           userProfileLookUpStub,
