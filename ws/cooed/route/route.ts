@@ -2,19 +2,16 @@ import { Logger } from "../logger/logger.ts";
 import { RouteLogger } from "../logger/route.logger.ts";
 import type { RequestHandler } from "../router/index.ts";
 import type { IncomingRoute, RouteCtx, RouteReport } from "./index.ts";
-import { dynamicPatternLookup } from "./util.ts";
+import { dynamicPatternLookup } from "./utils/route-look-up.ts";
+import { makeRouteKey } from "./utils/route-key.ts";
 
 export class Route {
   readonly #routeReport: RouteReport[] = [];
   readonly #routes = new Map<string, RouteCtx<string>>();
-  readonly #indexingKeySeperator = "_#_";
-
-  private _makeIndexingKey(route: IncomingRoute) {
-    return [route.path, route.method].join(this.#indexingKeySeperator);
-  }
+  readonly #makeKeyUtil = makeRouteKey();
 
   public addRoutes<Path extends string = "">(route: RouteCtx<Path>) {
-    const routeKey = this._makeIndexingKey(route);
+    const routeKey = this.#makeKeyUtil.serialize(route);
     const isPathRegistered = this.#routes.has(routeKey);
 
     if (isPathRegistered) {
@@ -87,7 +84,7 @@ export class Route {
     }
 
     return {
-      key: resolvedPattern.replace(/\_#_\w+/g, ""),
+      key: this.#makeKeyUtil.deSerialize(resolvedPattern),
       handlers: handlers.handlers,
     };
   }
@@ -97,7 +94,7 @@ export class Route {
   }
 
   private _getRoute(route: IncomingRoute) {
-    const routeKey = this._makeIndexingKey(route);
+    const routeKey = this.#makeKeyUtil.serialize(route);
     return this.#routes.get(routeKey);
   }
 
