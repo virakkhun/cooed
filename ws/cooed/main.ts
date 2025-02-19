@@ -21,6 +21,7 @@ import { buildRequestCtx } from "./app/util.ts";
  *
  * a simple api server
  * ```ts
+ * import { Cooed } from '@cooed/cooed-router'
  * const app = new Cooed()
  *
  * // define endpoints
@@ -35,7 +36,7 @@ import { buildRequestCtx } from "./app/util.ts";
  * grouping.get('/dev/:devId', ctx => ctx.response.json(ctx.request.params.devId))
  *
  * // with Deno
- * Deno.serve(app.serve)
+ * Deno.serve((req) => app.serve(req))
  * ```
  * @public
  */

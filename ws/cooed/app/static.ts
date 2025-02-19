@@ -7,11 +7,26 @@ import type { StaticConfig } from "./type.ts";
  *
  * @example
  * ```ts
- * const app = new Cooed({
- *  static: new Static<string>({
- *    dir: 'static'
- *  })
- * })
+ * import { Cooed, Static } from "@cooed/cooed-router";
+ *
+ * const server = new Cooed({
+ *   static: new Static({
+ *     dir: "playgrounds/static/dist",
+ *   }),
+ * });
+ *
+ * server.get("/", async () => {
+ *   const index = await Deno.readTextFile("playgrounds/static/dist/index.html");
+ *   return new Response(index, {
+ *     headers: {
+ *       "Content-Type": "text/html",
+ *     },
+ *   });
+ * });
+ *
+ * Deno.serve(async (req) => {
+ *   return await server.serve(req);
+ * });
  * ```
  * see example at {@link https://github.com/virakkhun/cooed/blob/develop/playgrounds/static/server.ts}
  *
