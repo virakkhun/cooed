@@ -1,6 +1,6 @@
 {
-  "name": "@cooed/router",
-  "version": "0.1.0",
+  "name": "@cooed/cooed-router",
+  "version": "1.0.0-beta.3",
   "exports": "./mod.ts",
   "license": "MIT"
 }

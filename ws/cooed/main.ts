@@ -13,7 +13,7 @@ import type { Static } from "./app/static.ts";
 import { buildRequestCtx } from "./app/util.ts";
 
 /**
- * @class CooedServer
+ * @class Cooed
  * @description a main entry to create a server and serve http request
  * @returns {CooedRouter} CooedRouter
  *
@@ -21,7 +21,8 @@ import { buildRequestCtx } from "./app/util.ts";
  *
  * a simple api server
  * ```ts
- * const app = new CooedServer()
+ * import { Cooed } from '@cooed/cooed-router'
+ * const app = new Cooed()
  *
  * // define endpoints
  * app.get('/', (ctx) => ctx.text('Hello world'))
@@ -35,11 +36,11 @@ import { buildRequestCtx } from "./app/util.ts";
  * grouping.get('/dev/:devId', ctx => ctx.response.json(ctx.request.params.devId))
  *
  * // with Deno
- * Deno.serve(app.serve)
+ * Deno.serve((req) => app.serve(req))
  * ```
  * @public
  */
-export class CooedServer implements CooedRouter {
+export class Cooed implements CooedRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
   private _static: Static<string> | undefined = undefined;
@@ -165,8 +166,8 @@ export class CooedServer implements CooedRouter {
 
     for (const handler of handlers) {
       const next = handler(ctx);
-      const isNextInstanceOfResponse = next instanceof Response ||
-        next instanceof Promise;
+      const isNextInstanceOfResponse =
+        next instanceof Response || next instanceof Promise;
       if (isNextInstanceOfResponse) {
         response = next;
         break;
@@ -190,7 +191,7 @@ export class CooedServer implements CooedRouter {
       if (res) return res;
     }
 
-    const method = <HttpMethod> req.method;
+    const method = <HttpMethod>req.method;
     const { key, handlers } = this._route.resolveHandler({
       path: pathname,
       method,
