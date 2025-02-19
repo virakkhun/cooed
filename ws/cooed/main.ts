@@ -165,8 +165,8 @@ export class CooedServer implements CooedRouter {
 
     for (const handler of handlers) {
       const next = handler(ctx);
-      const isNextInstanceOfResponse =
-        next instanceof Response || next instanceof Promise;
+      const isNextInstanceOfResponse = next instanceof Response ||
+        next instanceof Promise;
       if (isNextInstanceOfResponse) {
         response = next;
         break;
@@ -190,7 +190,7 @@ export class CooedServer implements CooedRouter {
       if (res) return res;
     }
 
-    const method = <HttpMethod>req.method;
+    const method = <HttpMethod> req.method;
     const { key, handlers } = this._route.resolveHandler({
       path: pathname,
       method,

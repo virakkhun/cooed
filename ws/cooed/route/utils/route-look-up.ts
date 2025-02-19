@@ -5,7 +5,7 @@ export function groupOccurrences(...arr: string[]) {
         [value]: arr.filter((v) => v === value).length,
       });
     },
-    <Record<string, number>>{},
+    <Record<string, number>> {},
   );
 }
 

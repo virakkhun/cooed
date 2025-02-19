@@ -25,7 +25,8 @@ Deno.test({
     });
 
     await t.step({
-      name: "Should return { slug: 'd21931c2-8aaa-4c30-adad-5e6f3494ccb3', type: 'enterprise' }",
+      name:
+        "Should return { slug: 'd21931c2-8aaa-4c30-adad-5e6f3494ccb3', type: 'enterprise' }",
       fn() {
         expect(slug).toStrictEqual({
           slug: "d21931c2-8aaa-4c30-adad-5e6f3494ccb3",
