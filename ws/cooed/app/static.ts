@@ -15,7 +15,7 @@ import type { StaticConfig } from "./type.ts";
  * ```
  * see example at {@link https://github.com/virakkhun/cooed/blob/develop/playgrounds/static/server.ts}
  *
- * @publicApi
+ * @public
  */
 export class Static<T extends string = ""> {
   #staticEntry = new Map<string, string>();

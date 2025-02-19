@@ -26,6 +26,4 @@ client.get("/:param", (ctx) => {
   return Response.json(ctx.request.params);
 });
 
-server.report();
-
 Deno.serve({ port: 8000 }, async (req) => await server.serve(req));

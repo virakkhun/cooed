@@ -37,6 +37,7 @@ import { buildRequestCtx } from "./app/util.ts";
  * // with Deno
  * Deno.serve(app.serve)
  * ```
+ * @public
  */
 export class CooedServer implements CooedRouter {
   private _route: Route = new Route();
@@ -44,8 +45,12 @@ export class CooedServer implements CooedRouter {
   private _static: Static<string> | undefined = undefined;
 
   constructor(private _config?: ServerConfig) {
-    if (!this._config) return;
     this._initialStatic();
+    this._labelingAPIRoutes();
+  }
+
+  private _labelingAPIRoutes() {
+    console.log("\n%c+ API\n", "color:white; font-weight:bold;");
   }
 
   private _initialStatic() {
@@ -122,12 +127,32 @@ export class CooedServer implements CooedRouter {
   }
 
   /**
-   * @method ok
+   * @method delete
+   * @description define a route with 'DELETE' method
+   * ```ts
+   * app.delete('/hello/:id', async ctx => {
+   *  await db.helllo.delete(ctx.request.params.id)
+   *  return ctx.response.status(200).send()
+   * })
+   * ```
+   * @public
    */
   delete<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._router.delete(path, ...handlers);
   }
 
+  /**
+   * @method group
+   * @description grouping a route with prefix
+   * ```ts
+   * const world = app.group('/world')
+   *
+   * world.get('/', _ => new Response('/group/ Hello world'))
+   * ```
+   * @returns {CooedRouter}
+   *
+   * @public
+   */
   group(prefix: string, middleware?: RequestHandler): CooedRouter {
     return this._router.group(prefix, middleware);
   }
@@ -149,16 +174,6 @@ export class CooedServer implements CooedRouter {
     }
 
     return response;
-  }
-
-  /**
-   * @method report
-   * @description a method to show the report of the registered route
-   *
-   * @public
-   */
-  public report() {
-    this._route.report();
   }
 
   /**
