@@ -15,8 +15,6 @@ server.get("/", async () => {
   });
 });
 
-server.report();
-
 Deno.serve(async (req) => {
   return await server.serve(req);
 });
