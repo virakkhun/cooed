@@ -1,6 +1,6 @@
-import { CooedServer, Static } from "@cooed/router";
+import { Cooed, Static } from "@cooed/cooed-router";
 
-const server = new CooedServer({
+const server = new Cooed({
   static: new Static({
     dir: "playgrounds/static/dist",
   }),

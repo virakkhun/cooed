@@ -7,7 +7,7 @@ import type { StaticConfig } from "./type.ts";
  *
  * @example
  * ```ts
- * const app = new CooedServer({
+ * const app = new Cooed({
  *  static: new Static<string>({
  *    dir: 'static'
  *  })
