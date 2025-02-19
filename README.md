@@ -24,20 +24,20 @@ const server = new CooedServer({
   }),
 });
 
-const middleware: RequestHandler = (_req, next) => {
+const middleware: RequestHandler = (ctx) => {
+  if (ctx.request.method === "GET") {
+    return ctx.response.badRequest();
+  }
   return next;
 };
 
-server.get("/", middleware, () => {
-  return Response.json("Hello world!!");
+server.get("/", middleware, (ctx) => {
+  return ctx.response.json("Hello world!!").send();
 });
 
 const client = server.group("/client");
 
 client.get("/", () => new Response("Hello client"));
-
-// call this to log the report of the registered handler
-server.report();
 
 // listen to Request through Deno.serve
 Deno.serve({ port: 8000 }, async (req) => await server.serve(req));
