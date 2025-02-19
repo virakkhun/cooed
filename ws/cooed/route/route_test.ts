@@ -1,9 +1,8 @@
-import { HttpMethod } from "../router/type.ts";
+import { HttpMethod, type RequestCtx } from "../router/type.ts";
 import { Route } from "./route.ts";
 import { expect } from "jsr:@std/expect";
 import { CooedResponse } from "../response/index.ts";
 import type { RouteCtx } from "./type.ts";
-import type { RequestCtx } from "../mod.ts";
 import type { CooedRequest } from "../request/index.ts";
 
 const helloGetStub: RouteCtx = {
@@ -19,7 +18,7 @@ const helloPostStub: RouteCtx = {
 };
 
 const spyRequestCtx: RequestCtx = {
-  request: <CooedRequest> {},
+  request: <CooedRequest>{},
   next: () => {},
   response: new CooedResponse(),
 };
@@ -68,8 +67,7 @@ Deno.test({
     });
 
     await t.step({
-      name:
-        "Should return not found response when route to none-registered route",
+      name: "Should return not found response when route to none-registered route",
       fn() {
         const { handlers } = route.resolveHandler({
           path: "/somethingelse",
@@ -81,7 +79,7 @@ Deno.test({
 
         const handler = handlers[0];
 
-        const res = <Response> handler(spyRequestCtx);
+        const res = <Response>handler(spyRequestCtx);
         expect(res).toBeInstanceOf(Response);
         expect(res.ok).toStrictEqual(false);
         expect(res.status).toStrictEqual(404);
@@ -89,8 +87,7 @@ Deno.test({
     });
 
     await t.step({
-      name:
-        "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
+      name: "Should resolve a handler when providing {path: '/hello', method: 'GET'}",
       async fn(t) {
         const { handlers } = route.resolveHandler({
           path: "/hello",
@@ -115,8 +112,8 @@ Deno.test({
             const handler = handlers[0];
             const res = handler(spyRequestCtx);
             expect(res).toBeInstanceOf(Response);
-            expect((<Response> res).ok).toBe(true);
-            expect(await (<Response> res).text()).toStrictEqual("world");
+            expect((<Response>res).ok).toBe(true);
+            expect(await (<Response>res).text()).toStrictEqual("world");
           },
         });
       },

@@ -12,6 +12,32 @@ import type { ServerConfig } from "./type.ts";
 import type { Static } from "./app/static.ts";
 import { buildRequestCtx } from "./app/util.ts";
 
+/**
+ * @class CooedServer
+ * @description a main entry to create a server and serve http request
+ * @returns {CooedRouter} CooedRouter
+ *
+ * @example
+ *
+ * a simple api server
+ * ```ts
+ * const app = new CooedServer()
+ *
+ * // define endpoints
+ * app.get('/', (ctx) => ctx.text('Hello world'))
+ *
+ * // define grouping route
+ * const grouping = app.group('/group')
+ *
+ * grouping.get('/', ctx => ctx.response.text('This is a group route'))
+ *
+ * // define route with params
+ * grouping.get('/dev/:devId', ctx => ctx.response.json(ctx.request.params.devId))
+ *
+ * // with Deno
+ * Deno.serve(app.serve)
+ * ```
+ */
 export class CooedServer implements CooedRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
@@ -29,22 +55,75 @@ export class CooedServer implements CooedRouter {
     }
   }
 
+  /**
+   * @method get
+   * @description define a route with `GET` method
+   * @example
+   * ```ts
+   * app.get('/hello', ctx => ctx.response.text('World'))
+   * ```
+   * @public
+   */
   get<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._router.get<Path>(path, ...handlers);
   }
 
+  /**
+   * @method post
+   * @description define a route with `POST` method
+   * @example
+   * ```ts
+   * app.post('/hello', async ctx => await ctx.response.text(await ctx.request.text()))
+   * ```
+   * @public
+   */
   post<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._router.post(path, ...handlers);
   }
 
+  /**
+   * @method patch
+   * @description define a route with `PATCH` method
+   * @example
+   * ```ts
+   * app.patch('/hello/:id', async ctx => {
+   *  const id = ctx.request.params.id
+   *  const body = await ctx.request.json()
+   *  const query = await db.hello.patch(id, {...body})
+   *
+   *  if(!query.result.ok) return ctx.response.badRequest()
+   *
+   *  return ctx.response.status(200).send()
+   * })
+   * ```
+   * @public
+   */
   patch<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._router.patch(path, ...handlers);
   }
 
+  /**
+   * @method put
+   * @description define a route with `PUT` method
+   * @example
+   * ```ts
+   * app.put('/hello/:id', async ctx => {
+   *  const id = ctx.request.params.id
+   *  const body = await ctx.request.text()
+   *  await db.hello.put(id, body)
+   *  // expected result ok
+   *  return ctx.response.status(200).send()
+   * })
+   * ```
+   * @public
+   */
   put<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._router.put(path, ...handlers);
   }
 
+  /**
+   * @method ok
+   */
   delete<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._router.delete(path, ...handlers);
   }
@@ -61,8 +140,8 @@ export class CooedServer implements CooedRouter {
 
     for (const handler of handlers) {
       const next = handler(ctx);
-      const isNextInstanceOfResponse = next instanceof Response ||
-        next instanceof Promise;
+      const isNextInstanceOfResponse =
+        next instanceof Response || next instanceof Promise;
       if (isNextInstanceOfResponse) {
         response = next;
         break;
@@ -72,10 +151,22 @@ export class CooedServer implements CooedRouter {
     return response;
   }
 
+  /**
+   * @method report
+   * @description a method to show the report of the registered route
+   *
+   * @public
+   */
   public report() {
     this._route.report();
   }
 
+  /**
+   * @method serve
+   * @description call serve to handle request
+   *
+   * @public
+   */
   public async serve(req: Request): Promise<Response> {
     const { pathname } = new URL(req.url);
 
@@ -84,7 +175,7 @@ export class CooedServer implements CooedRouter {
       if (res) return res;
     }
 
-    const method = <HttpMethod> req.method;
+    const method = <HttpMethod>req.method;
     const { key, handlers } = this._route.resolveHandler({
       path: pathname,
       method,
