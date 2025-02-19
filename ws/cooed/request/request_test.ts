@@ -135,7 +135,8 @@ Deno.test({
     });
 
     await t.step({
-      name: "Should throw an error with message <Cannot read properties of undefined (reading 'blob')>",
+      name:
+        "Should throw an error with message <Cannot read properties of undefined (reading 'blob')>",
       fn() {
         expect(instance.blob).toThrow(
           "Cannot read properties of undefined (reading 'blob')",

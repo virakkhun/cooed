@@ -33,7 +33,8 @@ Deno.test({
     });
 
     await t.step({
-      name: `Should return /users/:id/profile when lookup for ${userProfileLookUpStub}`,
+      name:
+        `Should return /users/:id/profile when lookup for ${userProfileLookUpStub}`,
       fn() {
         const value = dynamicPatternLookup(
           userProfileLookUpStub,

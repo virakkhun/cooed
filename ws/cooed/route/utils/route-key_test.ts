@@ -13,7 +13,8 @@ Deno.test({
     };
 
     await t.step({
-      name: "Should return '/user___GET' when serialize({method: 'GET', path: '/user'})",
+      name:
+        "Should return '/user___GET' when serialize({method: 'GET', path: '/user'})",
       fn() {
         const result = util.serialize(route);
         expect(result).toBeTruthy();
