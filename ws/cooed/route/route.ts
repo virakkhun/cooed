@@ -1,7 +1,6 @@
-import { Logger } from "../logger/logger.ts";
-import { RouteLogger } from "../logger/route.logger.ts";
 import type { RequestHandler } from "../router/index.ts";
 import type { IncomingRoute, RouteCtx } from "./index.ts";
+import { RouteLogger } from "../logger/route.logger.ts";
 import { dynamicPatternLookup } from "./utils/route-look-up.ts";
 import { makeRouteKey } from "./utils/route-key.ts";
 
@@ -17,14 +16,12 @@ export class Route {
       throw new Error(`${route.path} is already registered!!`);
     }
 
-    new Logger(
-      new RouteLogger({
-        method: route.method,
-        path: route.path,
-        handlers: this._mapHandlerToItsName(route),
-      }),
-    );
     this.#routes.set(routeKey, route);
+    new RouteLogger({
+      method: route.method,
+      path: route.path,
+      handlers: this._mapHandlerToItsName(route),
+    });
   }
 
   public resolveHandler(route: IncomingRoute): {

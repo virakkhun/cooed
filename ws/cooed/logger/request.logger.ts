@@ -1,18 +1,12 @@
+import type { RequestCtx } from "../router/type.ts";
 import type { ILogger } from "./type.ts";
 
-type RequestLoggerDTO = {
-  method: string;
-  pathname: string;
-  status: number;
-};
-
 export class RequestLogger implements ILogger {
-  constructor(public dto: RequestLoggerDTO) {}
+  constructor() {}
 
-  log(): void {
-    const { pathname, method, status } = this.dto;
-    const template =
-      `%c>>>> %cpath: ${pathname} | method: ${method} | status: ${status} | %ctimestamp: %c${this._isoTime}`;
+  log(ctx: Readonly<RequestCtx>): void {
+    const { request, response } = ctx;
+    const template = `%c>>>> %cpath: ${request.path} | method: ${request.method} | status: ${response.statusCode} | %ctimestamp: %c${this._isoTime}`;
     const format = [
       "color:yellow;",
       "color:green;",
