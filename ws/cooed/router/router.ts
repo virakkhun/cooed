@@ -31,7 +31,7 @@ export class Router implements CooedRouter {
 
   put<Path extends string>(path: Path, ...handlers: RequestHandler<Path>[]) {
     this._route.addRoutes({
-      method: HttpMethod.Update,
+      method: HttpMethod.Put,
       path,
       handlers,
     });

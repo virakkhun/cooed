@@ -68,7 +68,7 @@ export class Cors {
           HttpMethod.Get,
           HttpMethod.Post,
           HttpMethod.Patch,
-          HttpMethod.Update,
+          HttpMethod.Put,
           HttpMethod.Delete,
         ].join(", "),
     };
