@@ -11,6 +11,8 @@ server.get("/:id/:path", middleware, (ctx) => {
   return Response.json(params);
 });
 
+server.get("*", (ctx) => ctx.response.json("everything bro").send("worked"));
+
 const client = server.group("/client", (ctx) => {
   if (ctx.request.href.includes("?")) {
     return new Response("url can't be include query", {

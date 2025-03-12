@@ -3,12 +3,17 @@ import type { IncomingRoute, RouteCtx } from "./index.ts";
 import { RouteLogger } from "../logger/route.logger.ts";
 import { dynamicPatternLookup } from "./utils/route-look-up.ts";
 import { makeRouteKey } from "./utils/route-key.ts";
+import { HttpMethod } from "../router/type.ts";
 
 export class Route {
   readonly #routes = new Map<string, RouteCtx<string>>();
   readonly #makeKeyUtil = makeRouteKey();
 
   public addRoutes<Path extends string = "">(route: RouteCtx<Path>) {
+    if (route.path === "*" && route.method !== HttpMethod.Get) {
+      throw new Error("* path can not be registered beside GET");
+    }
+
     const routeKey = this.#makeKeyUtil.serialize(route);
     const isPathRegistered = this.#routes.has(routeKey);
 
@@ -54,9 +59,13 @@ export class Route {
     ]);
 
     if (!resolvedPattern) {
+      const universalHandlers = this._resolveUniversalHandlers();
+
       return {
         key: route.path,
-        handlers: Array.of(this._handlerNotFound),
+        handlers: universalHandlers.length
+          ? universalHandlers
+          : Array.of(this._handlerNotFound),
       };
     }
 
@@ -73,6 +82,15 @@ export class Route {
       key: this.#makeKeyUtil.deSerialize(resolvedPattern),
       handlers: handlers.handlers,
     };
+  }
+
+  private _resolveUniversalHandlers() {
+    const key = this.#makeKeyUtil.serialize({
+      method: HttpMethod.Get,
+      path: "*",
+    });
+    const universalHandlers = this.#routes.get(key);
+    return universalHandlers ? universalHandlers.handlers : [];
   }
 
   public get routes(): Map<string, RouteCtx> {
