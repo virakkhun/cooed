@@ -4,7 +4,7 @@ import type { CooedResponse } from "../response/response.ts";
 export enum HttpMethod {
   Get = "GET",
   Post = "POST",
-  Update = "UPDATE",
+  Put = "PUT",
   Patch = "PATCH",
   Delete = "DELETE",
 }

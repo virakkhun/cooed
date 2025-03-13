@@ -7,6 +7,10 @@ export class CooedResponse {
 
   constructor() {}
 
+  public get statusCode() {
+    return this._status;
+  }
+
   send(statusText?: string): Response {
     return new Response(this._body, {
       status: this._status,

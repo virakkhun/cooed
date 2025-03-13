@@ -10,6 +10,7 @@ import type {
 } from "./router/type.ts";
 import type { ServerConfig } from "./type.ts";
 import type { Static } from "./app/static.ts";
+import type { ILogger } from "./logger/type.ts";
 import { buildRequestCtx } from "./app/util.ts";
 
 /**
@@ -44,10 +45,12 @@ export class Cooed implements CooedRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
   private _static: Static<string> | undefined = undefined;
+  private _logger: ILogger = new RequestLogger();
 
   constructor(private _config?: ServerConfig) {
     this._initialStatic();
     this._labelingAPIRoutes();
+    if (this._config?.logger) this._logger = this._config.logger;
   }
 
   private _labelingAPIRoutes() {
@@ -201,13 +204,13 @@ export class Cooed implements CooedRouter {
 
     if (response instanceof Promise) {
       const res = await response;
-      new Logger(new RequestLogger({ pathname, method, status: res.status }));
+      ctx.response.status(res.status);
+      new Logger(Object.freeze(ctx)).of(this._logger);
       return res;
     }
 
-    new Logger(
-      new RequestLogger({ pathname, method, status: response.status }),
-    );
+    ctx.response.status(response.status);
+    new Logger(Object.freeze(ctx)).of(this._logger);
     return response;
   }
 }
