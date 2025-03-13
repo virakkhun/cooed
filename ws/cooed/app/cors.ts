@@ -47,7 +47,7 @@ export class Cors {
     }
   }
 
-  public getHeaders() {
+  public getHeaders(): Headers {
     return this._headers;
   }
 

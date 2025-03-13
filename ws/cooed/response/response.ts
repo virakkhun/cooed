@@ -7,7 +7,7 @@ export class CooedResponse {
 
   constructor() {}
 
-  public get statusCode() {
+  public get statusCode(): HttpStatus {
     return this._status;
   }
 
