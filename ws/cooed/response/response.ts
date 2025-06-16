@@ -19,6 +19,12 @@ export class CooedResponse {
     });
   }
 
+  html(value: string): CooedResponse {
+    this._body = value;
+    this._headers.set("Content-Type", MIME_TYPE.html);
+    return this;
+  }
+
   text(value: string): CooedResponse {
     this._body = value;
     this._headers.set("Content-Type", MIME_TYPE.plain);

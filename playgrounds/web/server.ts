@@ -1,31 +1,19 @@
-import { Cooed, createHandler } from "@cooed/cooed-router";
+import { Cooed, Static } from "@cooed/cooed-router";
+import { Engine } from "@cooed/start";
 
-const server = new Cooed();
-
-const middleware = createHandler((ctx) => {
-  return ctx.next;
+const server = new Cooed({
+  static: new Static({
+    dir: "playgrounds/ssr/static",
+  }),
 });
 
-server.get("/:id/:path", middleware, (ctx) => {
-  const params = ctx.request.params;
-  return Response.json(params);
+const engine = new Engine({
+  document: `${Deno.cwd()}/playgrounds/ssr/index.html`,
+  pageDir: `${Deno.cwd()}/playgrounds/ssr/pages`,
 });
 
-server.get("*", (ctx) => ctx.response.json("everything bro").send("worked"));
-
-const client = server.group("/client", (ctx) => {
-  if (ctx.request.href.includes("?")) {
-    return new Response("url can't be include query", {
-      status: 400,
-    });
-  }
-
-  return ctx.next;
+server.get("*", (ctx) => {
+  return engine.render(ctx.request.raw);
 });
 
-client.get("/", () => new Response("Hello client"));
-client.get("/:param", (ctx) => {
-  return Response.json(ctx.request.params);
-});
-
-Deno.serve({ port: 8000 }, async (req) => await server.serve(req));
+Deno.serve((req) => server.serve(req));
