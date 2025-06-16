@@ -1,11 +1,19 @@
 {
   "enable": true,
   "tasks": {
-    "dev:api": "deno run --watch --allow-net --allow-read --allow-write playgrounds/web/server.ts",
-    "dev:static": "deno run --watch --allow-net --allow-read --allow-write playgrounds/static/server.ts"
+    "dev:server": "deno run --watch --allow-net --allow-read --allow-write playgrounds/server/server.ts",
+    "dev:static": "deno run --watch --allow-net --allow-read --allow-write playgrounds/static/server.ts",
+    "dev:web": "deno run --allow-env --watch --allow-net --allow-read --allow-write playgrounds/web/server.ts"
   },
   "imports": {
-    "@std/expect": "jsr:@std/expect@^1.0.10"
+    "@std/expect": "jsr:@std/expect@^1.0.10",
+    "react": "npm:react@^19.0.0",
+    "react-dom": "npm:react-dom@^19.0.0",
+    "@types/react": "npm:@types/react@^19.0.1"
   },
-  "workspace": ["./ws/cooed/"]
+  "workspace": ["./ws/cooed/", "./ws/start/"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  }
 }

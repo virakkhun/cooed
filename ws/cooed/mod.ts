@@ -15,3 +15,4 @@ export * from "./helper/create-handler.ts";
  * @public
  */
 export * from "./app/static.ts";
+export * from "./router/type.ts";

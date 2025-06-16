@@ -7,7 +7,7 @@ export class CooedResponse {
 
   constructor() {}
 
-  public get statusCode() {
+  public get statusCode(): HttpStatus {
     return this._status;
   }
 
@@ -17,6 +17,12 @@ export class CooedResponse {
       headers: this._headers,
       statusText,
     });
+  }
+
+  html(value: string): CooedResponse {
+    this._body = value;
+    this._headers.set("Content-Type", MIME_TYPE.html);
+    return this;
   }
 
   text(value: string): CooedResponse {
