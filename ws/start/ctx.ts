@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, type Context } from "react";
 
 export type PageCtx<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -7,4 +7,6 @@ export type PageCtx<
   data: T;
 };
 
-export const PageContext = createContext(<Readonly<PageCtx>>{});
+export const PageContext: Context<Readonly<PageCtx>> = createContext(
+  <Readonly<PageCtx>>{},
+);

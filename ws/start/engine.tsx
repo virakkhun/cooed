@@ -2,6 +2,11 @@ import type { EngineConfig, PageMod } from "./type.ts";
 import { renderToStaticMarkup } from "react-dom/server";
 import { PageContext } from "./ctx.ts";
 
+/**
+ * @class Engine
+ * @description
+ * a class to create a render engine to render html document
+ */
 export class Engine {
   #bodyPlaceholder = "<%body%>";
 
