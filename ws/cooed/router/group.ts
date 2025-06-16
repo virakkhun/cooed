@@ -1,9 +1,19 @@
 import { truthyFn } from "../common/util/func.util.ts";
 import type { CooedRouter, RequestHandler, Router } from "./index.ts";
 
+/**
+ * @class RouterGroup
+ * @extends CooedRouter
+ * @description a class to create a router group
+ */
 export class RouterGroup implements CooedRouter {
   #prefix: string;
 
+  /**
+   * @param prefix a group prefix
+   * @param _router a router instance {@link Router}
+   * @param _handler a middlware handler
+   */
   constructor(
     prefix: string,
     private _router: Router,
@@ -12,6 +22,11 @@ export class RouterGroup implements CooedRouter {
     this.#prefix = prefix;
   }
 
+  /**
+   * define a route with method get and a series of request handlers
+   * @param handlers a series of request handlers
+   * @param path a string to defined a route
+   */
   get<Path extends string>(
     path: Path,
     ...handlers: RequestHandler<Path>[]
@@ -22,6 +37,11 @@ export class RouterGroup implements CooedRouter {
     );
   }
 
+  /**
+   * define a route with method delete and a series of request handlers
+   * @param handlers a series of request handlers
+   * @param path a string to defined a route
+   */
   delete<Path extends string>(
     path: Path,
     ...handlers: RequestHandler<Path>[]
@@ -32,6 +52,11 @@ export class RouterGroup implements CooedRouter {
     );
   }
 
+  /**
+   * define a route with method patch and a series of request handlers
+   * @param handlers a series of request handlers
+   * @param path a string to defined a route
+   */
   patch<Path extends string>(
     path: Path,
     ...handlers: RequestHandler<Path>[]
@@ -42,6 +67,11 @@ export class RouterGroup implements CooedRouter {
     );
   }
 
+  /**
+   * define a route with method put and a series of request handlers
+   * @param handlers a series of request handlers
+   * @param path a string to defined a route
+   */
   put<Path extends string>(
     path: Path,
     ...handlers: RequestHandler<Path>[]
@@ -52,6 +82,11 @@ export class RouterGroup implements CooedRouter {
     );
   }
 
+  /**
+   * define a route with method post and a series of request handlers
+   * @param handlers a series of request handlers
+   * @param path a string to defined a route
+   */
   post<Path extends string>(
     path: Path,
     ...handlers: RequestHandler<Path>[]

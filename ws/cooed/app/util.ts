@@ -3,6 +3,12 @@ import { CooedRequest } from "../request/request.ts";
 import { CooedResponse } from "../response/response.ts";
 import type { RequestCtx } from "../router/index.ts";
 
+/**
+ * @description a function to build a params
+ * @function buildParams
+ * @param keys
+ * @param path
+ */
 export function buildParams(
   path: string,
   keys: string,
@@ -18,12 +24,18 @@ export function buildParams(
           [key]: value,
         });
       },
-      <Record<string, string>> {},
+      <Record<string, string>>{},
     );
 
   return params;
 }
 
+/**
+ * @description a function to build request context
+ * @function buildRequestCtx
+ * @param req
+ * @param indexedPath
+ */
 export function buildRequestCtx(req: Request, indexedPath: string): RequestCtx {
   return {
     request: new CooedRequest(req, indexedPath),
