@@ -20,6 +20,10 @@ export type CorsConfig = {
   origin?: string[];
 };
 
+/**
+ * @constant
+ * @description default CORS headers
+ */
 const CORS_HEADERS = [
   "Access-Control-Allow-Origin",
   "Access-Control-Request-Method",

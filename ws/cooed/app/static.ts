@@ -40,6 +40,11 @@ export class Static<T extends string = ""> {
     this._registerStaticPath(this._fullDir);
   }
 
+  /**
+   * @function resolve
+   * @param path
+   * @description a function to resolve a static file
+   */
   async resolve(path: string): Promise<Response | undefined> {
     const fullPath = this.#staticEntry.get(path);
     if (!fullPath) return undefined;
@@ -75,6 +80,10 @@ export class Static<T extends string = ""> {
     }
   }
 
+  /**
+   * @function report
+   * a function report each entry of static file
+   */
   public report() {
     console.log("\n%c+ Static\n", "color:white; font-weight:bold;");
     console.log("files:", this.#staticEntry.size);
