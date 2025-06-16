@@ -3,13 +3,13 @@ import { Engine } from "@cooed/start";
 
 const server = new Cooed({
   static: new Static({
-    dir: "playgrounds/ssr/static",
+    dir: "playgrounds/web/static",
   }),
 });
 
 const engine = new Engine({
-  document: `${Deno.cwd()}/playgrounds/ssr/index.html`,
-  pageDir: `${Deno.cwd()}/playgrounds/ssr/pages`,
+  document: `${Deno.cwd()}/playgrounds/web/index.html`,
+  pageDir: `${Deno.cwd()}/playgrounds/web/pages`,
 });
 
 server.get("*", (ctx) => {
