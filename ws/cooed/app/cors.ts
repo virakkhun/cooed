@@ -22,7 +22,7 @@ export type CorsConfig = {
 
 /**
  * @constant
- * @description default CORS headers
+ * default CORS headers
  */
 const CORS_HEADERS = [
   "Access-Control-Allow-Origin",
@@ -31,8 +31,7 @@ const CORS_HEADERS = [
 ] as const;
 
 /**
- * @class Cors
- * @description enable cors in application server
+ * enable cors in application server
  * @public
  */
 export class Cors {

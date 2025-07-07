@@ -3,9 +3,7 @@ import { RouterGroup } from "./group.ts";
 import { type CooedRouter, HttpMethod, type RequestHandler } from "./type.ts";
 
 /**
- * @class Router
- * @extends CooedRouter
- * @description a class represent of Router, contains get, post, patch, put, delete, and group
+ * a class represent of Router, contains get, post, patch, put, delete, and group
  */
 export class Router implements CooedRouter {
   constructor(private _route: Route) {}

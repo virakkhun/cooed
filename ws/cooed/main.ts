@@ -14,7 +14,7 @@ import { buildRequestCtx } from "./app/util.ts";
 
 /**
  * @class Cooed
- * @description a main entry to create a server and serve http request
+ * a main entry to create a server and serve http request
  * @returns {CooedRouter} CooedRouter
  *
  * @example
@@ -56,7 +56,7 @@ export class Cooed implements CooedRouter {
 
   /**
    * @method get
-   * @description define a route with `GET` method
+   * define a route with `GET` method
    * @example
    * ```ts
    * app.get('/hello', ctx => ctx.response.text('World'))
@@ -69,7 +69,7 @@ export class Cooed implements CooedRouter {
 
   /**
    * @method post
-   * @description define a route with `POST` method
+   * define a route with `POST` method
    * @example
    * ```ts
    * app.post('/hello', async ctx => await ctx.response.text(await ctx.request.text()))
@@ -82,7 +82,7 @@ export class Cooed implements CooedRouter {
 
   /**
    * @method patch
-   * @description define a route with `PATCH` method
+   * define a route with `PATCH` method
    * @example
    * ```ts
    * app.patch('/hello/:id', async ctx => {
@@ -103,7 +103,7 @@ export class Cooed implements CooedRouter {
 
   /**
    * @method put
-   * @description define a route with `PUT` method
+   * define a route with `PUT` method
    * @example
    * ```ts
    * app.put('/hello/:id', async ctx => {
@@ -122,7 +122,7 @@ export class Cooed implements CooedRouter {
 
   /**
    * @method delete
-   * @description define a route with 'DELETE' method
+   * define a route with 'DELETE' method
    * ```ts
    * app.delete('/hello/:id', async ctx => {
    *  await db.helllo.delete(ctx.request.params.id)
@@ -137,7 +137,7 @@ export class Cooed implements CooedRouter {
 
   /**
    * @method group
-   * @description grouping a route with prefix
+   * grouping a route with prefix
    * ```ts
    * const world = app.group('/world')
    *
@@ -171,9 +171,7 @@ export class Cooed implements CooedRouter {
   }
 
   /**
-   * @method serve
-   * @description call serve to handle request
-   *
+   * call serve to handle request
    * @public
    */
   public async serve(req: Request): Promise<Response> {

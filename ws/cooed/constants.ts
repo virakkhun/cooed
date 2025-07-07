@@ -1,5 +1,5 @@
 /**
- * @description default mime types, extracting from IANA
+ * default mime types, extracting from IANA
  *
  * @see IANA database {@link https://www.iana.org/assignments/media-types/media-types.xhtml}
  */

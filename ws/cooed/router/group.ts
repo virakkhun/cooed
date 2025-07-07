@@ -2,9 +2,7 @@ import { truthyFn } from "../common/util/func.util.ts";
 import type { CooedRouter, RequestHandler, Router } from "./index.ts";
 
 /**
- * @class RouterGroup
- * @extends CooedRouter
- * @description a class to create a router group
+ * a class to create a router group
  */
 export class RouterGroup implements CooedRouter {
   #prefix: string;

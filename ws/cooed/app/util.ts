@@ -4,7 +4,7 @@ import { CooedResponse } from "../response/response.ts";
 import type { RequestCtx } from "../router/index.ts";
 
 /**
- * @description a function to build a params
+ * a function to build a params
  * @function buildParams
  * @param keys
  * @param path
@@ -31,7 +31,7 @@ export function buildParams(
 }
 
 /**
- * @description a function to build request context
+ * a function to build request context
  * @function buildRequestCtx
  * @param req
  * @param indexedPath

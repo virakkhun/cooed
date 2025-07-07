@@ -4,7 +4,7 @@ type EntryDir<T extends string> = T extends `/${string}`
 
 /**
  * @type StaticConfig
- * @description serve static file config
+ * serve static file config
  * @property dir
  * @property extrasMimeType
  */
@@ -12,7 +12,7 @@ export interface StaticConfig<T extends string = ""> {
   /**
    * @property dir
    * @type EntryDir<T>
-   * @description static directory location
+   * static directory location
    * @example
    * ```typescript
    * {
@@ -22,8 +22,8 @@ export interface StaticConfig<T extends string = ""> {
    */
   dir: EntryDir<T>;
   /**
+   * to provide extras mime types
    * @optional @property extrasMimeType
-   * @description to provide extras mime types
    */
   extrasMimeType?: Record<string, string>;
 }
