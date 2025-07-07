@@ -2,7 +2,6 @@
   "enable": true,
   "tasks": {
     "dev:server": "deno run --watch --allow-net --allow-read --allow-write playgrounds/server/server.ts",
-    "dev:static": "deno run --watch --allow-net --allow-read --allow-write playgrounds/static/server.ts",
     "dev:web": "deno run --allow-env --watch --allow-net --allow-read --allow-write playgrounds/web/server.ts"
   },
   "imports": {

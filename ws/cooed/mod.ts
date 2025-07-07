@@ -14,5 +14,4 @@ export * from "./helper/create-handler.ts";
  * a module to serve static file
  * @public
  */
-export * from "./app/static.ts";
 export * from "./router/type.ts";

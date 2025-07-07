@@ -9,7 +9,6 @@ import type {
   RequestHandler,
 } from "./router/type.ts";
 import type { ServerConfig } from "./type.ts";
-import type { Static } from "./app/static.ts";
 import type { ILogger } from "./logger/type.ts";
 import { buildRequestCtx } from "./app/util.ts";
 
@@ -44,24 +43,15 @@ import { buildRequestCtx } from "./app/util.ts";
 export class Cooed implements CooedRouter {
   private _route: Route = new Route();
   private _router: Router = new Router(this._route);
-  private _static: Static<string> | undefined = undefined;
   private _logger: ILogger = new RequestLogger();
 
   constructor(private _config?: ServerConfig) {
-    this._initialStatic();
     this._labelingAPIRoutes();
     if (this._config?.logger) this._logger = this._config.logger;
   }
 
   private _labelingAPIRoutes() {
     console.log("\n%c+ API\n", "color:white; font-weight:bold;");
-  }
-
-  private _initialStatic() {
-    if (this._config?.static) {
-      this._static = this._config.static;
-      this._static.report();
-    }
   }
 
   /**
@@ -188,11 +178,6 @@ export class Cooed implements CooedRouter {
    */
   public async serve(req: Request): Promise<Response> {
     const { pathname } = new URL(req.url);
-
-    if (this._static) {
-      const res = await this._static.resolve(pathname);
-      if (res) return res;
-    }
 
     const method = <HttpMethod>req.method;
     const { key, handlers } = this._route.resolveHandler({
